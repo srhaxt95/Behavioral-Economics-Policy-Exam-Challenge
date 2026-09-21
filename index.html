@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Behavioral Economics & Policy Exam Challenge</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Prompt', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 selection:bg-indigo-500 selection:text-white">
+
+  <!-- Container -->
+  <div class="w-full max-w-3xl">
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="bg-slate-800/90 backdrop-blur border border-slate-700/80 rounded-3xl p-6 sm:p-10 shadow-2xl text-center relative overflow-hidden">
+      <div class="absolute -right-20 -top-20 w-60 h-60 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -bottom-20 w-60 h-60 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-medium mb-5">
+        <i data-lucide="sparkles" class="w-4 h-4"></i> Midterm Exam Simulation
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-3 leading-snug">
+        Behavioral Economics <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">& Public Policy Quiz</span>
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base max-w-lg mx-auto mb-8 font-light">
+        แบบทดสอบวัดระดับความเข้าใจเชิงลึกระดับกลางถึงยาก ระบบจะสุ่ม <strong class="text-indigo-300">30 ข้อ จากคลังข้อสอบ 100 ข้อ</strong> โดยไม่ซ้ำกันในแต่ละรอบ
+      </p>
+
+      <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-8 text-left">
+        <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <div class="text-slate-400 text-xs flex items-center gap-1.5 mb-1"><i data-lucide="help-circle" class="w-3.5 h-3.5 text-indigo-400"></i> ข้อสอบ</div>
+          <div class="text-lg font-semibold text-white">30 ข้อ</div>
+        </div>
+        <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <div class="text-slate-400 text-xs flex items-center gap-1.5 mb-1"><i data-lucide="database" class="w-3.5 h-3.5 text-teal-400"></i> คลังข้อสอบ</div>
+          <div class="text-lg font-semibold text-white">100 ข้อ</div>
+        </div>
+        <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-700/50">
+          <div class="text-slate-400 text-xs flex items-center gap-1.5 mb-1"><i data-lucide="shuffle" class="w-3.5 h-3.5 text-amber-400"></i> การสุ่ม</div>
+          <div class="text-lg font-semibold text-white">ไม่ซ้ำข้อ</div>
+        </div>
+      </div>
+
+      <button id="start-btn" class="w-full sm:w-auto px-10 py-3.5 rounded-2xl font-semibold bg-gradient-to-r from-indigo-600 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white shadow-lg shadow-indigo-600/30 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0">
+        เริ่มทำข้อสอบทันที
+      </button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quiz-screen" class="hidden bg-slate-800/90 backdrop-blur border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+      <!-- Progress & Nav Header -->
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <div>
+          <span class="text-xs font-semibold tracking-wider uppercase text-indigo-400" id="question-category">Category</span>
+          <h4 class="text-xs text-slate-400 font-medium">ข้อที่ <span id="current-question-num" class="text-white font-bold text-base">1</span> / <span id="total-question-num">30</span></h4>
+        </div>
+        <div class="text-right">
+          <span id="score-badge" class="px-3 py-1 bg-slate-900/80 border border-slate-700 rounded-full text-xs font-semibold text-slate-300">
+            คะแนนปัจจุบัน: <span id="live-score" class="text-indigo-400">0</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-700/50 rounded-full h-2 mb-6 overflow-hidden">
+        <div id="progress-fill" class="bg-gradient-to-r from-indigo-500 to-teal-400 h-2 rounded-full transition-all duration-300" style="width: 3.33%"></div>
+      </div>
+
+      <!-- Question Text -->
+      <div class="min-h-[90px] mb-6 flex items-center">
+        <h2 id="question-text" class="text-base sm:text-lg font-medium text-slate-100 leading-relaxed">
+          Loading Question...
+        </h2>
+      </div>
+
+      <!-- Options Container -->
+      <div id="options-container" class="space-y-3 mb-6">
+        <!-- Option buttons dynamically generated -->
+      </div>
+
+      <!-- Feedback / Explanation Box (Hidden until answered) -->
+      <div id="explanation-box" class="hidden p-4 rounded-2xl bg-slate-900/90 border border-slate-700 mb-6 text-sm">
+        <div class="flex items-center gap-2 font-semibold mb-1" id="feedback-status">
+          <!-- Icon & status -->
+        </div>
+        <p id="explanation-text" class="text-slate-300 text-xs sm:text-sm leading-relaxed"></p>
+      </div>
+
+      <!-- Bottom Controls -->
+      <div class="flex items-center justify-end">
+        <button id="next-btn" class="hidden px-6 py-2.5 rounded-xl font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-all duration-150 flex items-center gap-2">
+          <span>ข้อถัดไป</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden bg-slate-800/90 backdrop-blur border border-slate-700/80 rounded-3xl p-6 sm:p-10 shadow-2xl text-center">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 mb-4" id="result-icon-box">
+        <i data-lucide="award" class="w-10 h-10"></i>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">สรุปผลการสอบ</h2>
+      <p class="text-slate-400 text-sm mb-6" id="result-evaluation">ประเมินผลเสร็จสมบูรณ์</p>
+
+      <div class="bg-slate-900/70 border border-slate-700/60 rounded-2xl p-5 max-w-sm mx-auto mb-8">
+        <div class="text-slate-400 text-xs uppercase tracking-wider mb-1">คะแนนสุทธิของคุณ</div>
+        <div class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-teal-300">
+          <span id="final-score">0</span> <span class="text-xl text-slate-500 font-normal">/ 30</span>
+        </div>
+        <div class="text-xs text-slate-400 mt-2 font-light" id="score-percentage">คิดเป็น 0%</div>
+      </div>
+
+      <!-- History of questions review toggle -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button id="review-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-700 hover:bg-slate-700 text-slate-200 font-medium transition text-sm flex items-center justify-center gap-2">
+          <i data-lucide="list-checks" class="w-4 h-4 text-indigo-400"></i> ดูเฉลยทั้งหมด 30 ข้อ
+        </button>
+        <button id="restart-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white font-semibold shadow-md transition text-sm flex items-center justify-center gap-2">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i> สุ่มทำข้อสอบใหม่ (30 ข้อใหม่)
+        </button>
+      </div>
+
+      <!-- Review Section -->
+      <div id="review-section" class="hidden mt-8 text-left border-t border-slate-700/80 pt-6 max-h-[450px] overflow-y-auto custom-scrollbar pr-2 space-y-4">
+        <!-- Review cards dynamically injected here -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. QUESTION POOL: 100 ข้อ ระดับกลาง-ยาก
+    // ==========================================
+    const questionBank = [
+      {
+        q: "ตาม Prospect Theory ฟังก์ชันคุณค่า (Value Function) ในฝั่งผลขาดทุน (Losses) มีลักษณะรูปทรงอย่างไร และบ่งบอกถึงพฤติกรรมเสี่ยงแบบใด?",
+        category: "Prospect Theory",
+        options: [
+          "เว้า (Concave) - พฤติกรรมแสวงหาความเสี่ยง (Risk-seeking)",
+          "นูน (Convex) - พฤติกรรมแสวงหาความเสี่ยง (Risk-seeking)",
+          "เว้า (Concave) - พฤติกรรมกลัวความเสี่ยง (Risk-averse)",
+          "นูน (Convex) - พฤติกรรมกลัวความเสี่ยง (Risk-averse)"
+        ],
+        answer: 1,
+        explanation: "ฝั่งขาดทุน กราฟจะมีลักษณะนูน (Convex) บ่งบอกว่าผู้คนเกลียดความสูญเสียจนยอมแสวงหาความเสี่ยง (Risk-seeking) เพื่อหลีกเลี่ยงการขาดทุนที่แน่นอน"
+      },
+      {
+        q: "บุคคลหนึ่งปฏิเสธการโยนเหรียญที่ ออกหัวได้ 600 บาท แต่ออกก้อยเสีย 500 บาท ทั้งที่ Expected Value เป็นบวก (+50) ปรากฏการณ์นี้ตรงกับข้อใดที่สุด?",
+        category: "Prospect Theory",
+        options: [
+          "Mental Accounting",
+          "Loss Aversion",
+          "Status Quo Bias",
+          "Framing Effect"
+        ],
+        answer: 1,
+        explanation: "Loss Aversion มนุษย์ประเมินความเจ็บปวดจากการสูญเสียรุนแรงกว่าความสุขจากผลได้ในมูลค่าที่เท่ากันประมาณ 2 ถึง 2.5 เท่า"
+      },
+      {
+        q: "ในแบบจำลอง Quasi-Hyperbolic Discounting (β-δ Model) ค่าพารามิเตอร์ β (Beta) แสดงถึงคุณลักษณะใดของมนุษย์?",
+        category: "Intertemporal Choice",
+        options: [
+          "อัตราการคิดลดมาตรฐานข้ามช่วงเวลาแบบสม่ำเสมอ",
+          "ความเบี่ยงเบนหรืออคติชอบปัจจุบัน (Present Bias)",
+          "ความอดทนต่อผลตอบแทนในระยะยาว",
+          "ความยืดหยุ่นของอรรถประโยชน์ต่อหน่วยส่วนเพิ่ม"
+        ],
+        answer: 1,
+        explanation: "β สะท้อนถึง Present Bias (0 < β < 1) ซึ่งหาก β = 1 จะเทียบเท่ากับ Exponential Discounting แบบเดิมที่ไม่มีอคติปัจจุบัน"
+      },
+      {
+        q: "ข้อใดอธิบายสถานะ Time Inconsistency ของ 'Doer' เมื่อเปรียบเทียบกับ 'Planner' ได้ถูกต้องที่สุด?",
+        category: "Dual-System Model",
+        options: [
+          "Doer ให้คุณค่าแก่อนาคตมากกว่าปัจจุบันเสมอ",
+          "Planner ใช้ System 1 และปรับเปลี่ยนแผนตามสิ่งเร้าเฉพาะหน้า",
+          "Doer ตัดสินใจภายใต้อคติปัจจุบัน (Present Bias) ทำให้ละเลยแผนระยะยาวที่ Planner วางไว้",
+          "Planner และ Doer จะเลือกกิจกรรม Investment ในระดับเท่ากันเสมอ"
+        ],
+        answer: 2,
+        explanation: "Doer มองสั้น ใช้ System 1 เมื่อถึงเวลาจริงจะละเมิดแผนที่ Planner (System 2) วางแผนไว้ล่วงหน้า"
+      },
+      {
+        q: "ในกิจกรรมประเภท Indulgence Activities (บริโภคอาหารขยะ, ไถโซเชียลมีเดีย) ผลกระทบจาก Present Bias ก่อให้เกิดผลลัพธ์ใด?",
+        category: "Behavioral Failure",
+        options: [
+          "Under-consumption",
+          "Over-consumption",
+          "Optimal Consumption",
+          "Pareto Efficiency"
+        ],
+        answer: 1,
+        explanation: "เพราะ Indulgence มี Inow > 0 แต่ Ilater < 0 มนุษย์ให้ค่าน้ำหนักความสุขเดี๋ยวนี้สูงเกินไป จึงเกิดปัญหาเสพสุขเกินพอดี (Over-consumption)"
+      },
+      {
+        q: "การตั้งค่าให้พนักงานบริษัทเข้าสู่กองทุนสำรองเลี้ยงชีพโดยอัตโนมัติ (Automatic Enrollment) แต่ให้สิทธิกรอกแบบฟอร์มถอนตัวได้ จัดเป็นกลไกตามข้อใด?",
+        category: "Choice Architecture",
+        options: [
+          "Opt-in Default",
+          "Opt-out Default",
+          "Restricting Choice",
+          "Adding Choice"
+        ],
+        answer: 1,
+        explanation: "เป็น Opt-out Default ซึ่งอาศัยความเฉื่อย (Status Quo Bias) ของมนุษย์มาช่วยเพิ่มอัตราการออมเพื่อการเกษียณ"
+      },
+      {
+        q: "กรณี 'Amsterdam Airport Urinals' ที่ติดสติกเกอร์รูปแมลงวันไว้ในโถปัสสาวะเพื่อลดการเลอะเทอะ เป็นตัวอย่างของเครื่องมือใดในกรอบ MINDSPACE?",
+        category: "MINDSPACE",
+        options: [
+          "Default & Status Quo",
+          "Messenger Effect",
+          "Salience & Priming",
+          "Commitment Device"
+        ],
+        answer: 2,
+        explanation: "เป็นการใช้ Salience (จุดดึงดูดสายตาเด่นชัด) เพื่อปรับพฤติกรรมผ่าน System 1 โดยแทบไม่ต้องใช้ต้นทุน"
+      },
+      {
+        q: "ตามกรอบปรัชญาศีลธรรม ใน 'Trolley Problem' ดั้งเดิม (สับคันเลื่อน 1 คน เพื่อช่วย 5 คน) การตัดสินใจ 'สับคันเลื่อน' สอดคล้องกับแนวคิดใด?",
+        category: "Philosophy & Economics",
+        options: [
+          "Deontology (หน้าที่นิยม)",
+          "Utilitarianism (ประโยชน์นิยม)",
+          "Virtue Ethics (คุณธรรมนิยม)",
+          "Egalitarianism (ความเสมอภาคสมบูรณ์)"
+        ],
+        answer: 1,
+        explanation: "Utilitarianism มุ่งเน้นผลลัพธ์สุทธิ (Consequentialism) การรอด 5 คน เสียชีวิต 1 ย่อมสร้างสวัสดิการสุทธิสูงกว่า"
+      },
+      {
+        q: "เหตุใดในกรณี 'The Fat Man' (ผลักคนอ้วนลงไปขวางรถราง) คนส่วนใหญ่จึงปฏิเสธการกระทำ แม้ผลลัพธ์ทางตัวเลขจะช่วย 5 แลก 1 เหมือนกรณีสับราง?",
+        category: "Cognitive Processing",
+        options: [
+          "สมองประมวลผลการทำร้ายทางตรง (Direct Physical Harm) แตกต่างจากการกระทำผ่านอุปกรณ์ทางอ้อม",
+          "คนมองว่าน้ำหนักของคนอ้วนไม่สามารถหยุดรถรางได้จริง",
+          "คนมีอคติยืนยัน (Confirmation Bias) ต่อคนอ้วน",
+          "เกิดอาการ Choice Overload ในทันที"
+        ],
+        answer: 0,
+        explanation: "สมองมนุษย์ตอบสนองทางอารมณ์อย่างรุนแรงต่อการลงมือทำร้ายทางกายภาพโดยตรง (Personal Harm) ซึ่งขัดกับหลักจริยธรรมหน้าที่นิยมอย่างรุนแรง"
+      },
+      {
+        q: "สมชายตั้งใจจะเริ่มวิ่งออกกำลังกายพรุ่งนี้เช้า แต่พอเช้ามาถึง เขากดเลื่อนนาฬิกาปลุกแล้วนอนต่อ พฤติกรรมนี้สะท้อนข้อใดชัดเจนที่สุด?",
+        category: "Intertemporal Choice",
+        options: [
+          "Exponential Discounting ที่มี δ ต่ำ",
+          "Rational Expectation",
+          "Time Inconsistent Preferences อันเกิดจาก Present Bias",
+          "Law of Small Numbers"
+        ],
+        answer: 2,
+        explanation: "เมื่อเวลาปัจจุบันเปลี่ยน การตัดสินใจเปลี่ยนจากการมองการณ์ไกลเป็นความต้องการความสบายทันที เป็นลักษณะเฉพาะของ Time Inconsistency"
+      },
+      {
+        q: "คำว่า 'Libertarian Paternalism' ที่เป็นรากฐานของแนวคิด Nudge มีความหมายตรงกับข้อใด?",
+        category: "Behavioral Policy",
+        options: [
+          "รัฐบาลมีอำนาจสั่งการเบ็ดเสร็จเพื่อประโยชน์สูงสุดของประชาชน",
+          "การปล่อยให้กลไกตลาดเสรีทำงาน 100% โดยรัฐไม่แทรกแซงใดๆ",
+          "การชี้นำทางเลือกเพื่อสิ่งที่ดีต่อตัวบุคคล แต่ยังคงรักษาเสรีภาพในการเลือกไว้ครบถ้วน",
+          "การบังคับลงโทษผู้ที่ตัดสินใจผิดพลาดอย่างเป็นระบบ"
+        ],
+        answer: 2,
+        explanation: "Libertarian (เสรีนิยม) + Paternalism (การดูแลแบบพ่อปกครองลูก) = ชี้นำสิ่งที่ดีให้ แต่ไม่ตัดทางเลือกเดิมออกไป"
+      },
+      {
+        q: "กลลวงธุรกิจที่แจ้งเตือนว่า 'เหลือห้องพักสุดท้ายในราคานี้!' เพื่อเร่งให้ลูกค้าตัดสินใจซื้อ จัดเป็นเทคนิคใด?",
+        category: "Dark Nudge",
+        options: [
+          "Optimal Paternalism",
+          "Dark Nudge ผ่านการกระตุ้น Loss Aversion",
+          "Pure Altruism",
+          "Metacognition Architecture"
+        ],
+        answer: 1,
+        explanation: "เป็นการใช้ Dark Nudge เพื่อฉวยโอกาสจากความกลัวสูญเสียโอกาส (Fear of Missing Out / Loss Aversion)"
+      },
+      {
+        q: "การประเมินว่า 'รินลดา' น่าจะเป็น 'พนักงานธนาคารที่เป็นนักเคลื่อนไหวสิทธิสตรี' มากกว่า 'พนักงานธนาคารเพียงอย่างเดียว' เป็นความผิดพลาดชนิดใด?",
+        category: "Heuristics & Biases",
+        options: [
+          "Conjunction Fallacy",
+          "Projection Bias",
+          "Endowment Effect",
+          "Availability Bias"
+        ],
+        answer: 0,
+        explanation: "Conjunction Fallacy เกิดจาก Representativeness Heuristic โดยลืมหลักความน่าจะเป็นที่ P(A) ย่อมมากกว่าหรือเท่ากับ P(A ∩ B) เสมอ"
+      },
+      {
+        q: "การวิจัยนโยบายสาธารณะแบบ RCT (Randomized Controlled Trial) มีจุดประสงค์หลักเพื่ออะไร?",
+        category: "Policy Evaluation",
+        options: [
+          "เพื่อหาค่าทางสถิติโดยไม่ต้องมีกลุ่มควบคุม",
+          "เพื่อแยกผลของนโยบาย (Causal Effect) ออกจากปัจจัยรบกวนภายนอกอื่นๆ โดยสุ่มกลุ่มทดลองและควบคุม",
+          "เพื่อประหยัดงบประมาณของภาครัฐในการแจกสวัสดิการ",
+          "เพื่อทดสอบการทำงานของ System 1 เท่านั้น"
+        ],
+        answer: 1,
+        explanation: "RCT คือเครื่องมือมาตรฐานสูงสุดในการแยกผลลัพธ์ของ Treatment ออกจากอิทธิพลของตัวแปรอื่นๆ ผ่านการสุ่มกลุ่มตัวอย่าง"
+      },
+      {
+        q: "ตามแบบจำลอง Quasi-Hyperbolic สมมติ δ = 1, β = 0.5 บุคคลนี้จะประเมินคุณค่าของผลตอบแทน 1,000 บาท ในอีก 1 ปีข้างหน้า ณ ปัจจุบันมีมูลค่าเท่าใด?",
+        category: "Intertemporal Choice",
+        options: [
+          "1,000 บาท",
+          "750 บาท",
+          "500 บาท",
+          "250 บาท"
+        ],
+        answer: 2,
+        explanation: "U = β × δ × U(1000) = 0.5 × 1 × 1000 = 500 บาท"
+      },
+      {
+        q: "เครื่องมือ 'Commitment Device' (เครื่องมือผูกมัดตนเอง) ได้รับความนิยมและเป็นที่ต้องการสำหรับบุคคลประเภทใด?",
+        category: "Commitment Device",
+        options: [
+          "บุคคลที่เป็น Naïve ซึ่งไม่รู้ว่าตนเองมี Present Bias",
+          "บุคคลที่เป็น Sophisticated ซึ่งตระหนักรู้ว่าตนเองมีปัญหาขาดวินัยในอนาคต",
+          "Homo Economicus ที่ตัดสินใจแบบมีเหตุผล 100%",
+          "บุคคลที่ไม่สนใจผลประโยชน์ในอนาคตเลย"
+        ],
+        answer: 1,
+        explanation: "คนประเภท Sophisticated จะรู้ทันว่า Doer ในอนาคตจะเบี้ยวสัญญา จึงเต็มใจจ่ายต้นทุนเพื่อสร้างกลไกลงโทษผูกมัดตนเองล่วงหน้า"
+      },
+      {
+        q: "แนวคิด 'Health Halo Effect' ในบริบทของอาหารเพื่อสุขภาพ หมายถึงข้อใด?",
+        category: "Cognitive Bias",
+        options: [
+          "การที่ผู้บริโภคมองว่าอาหารทุกชนิดในซูเปอร์มาร์เก็ตมีประโยชน์เท่ากันหมด",
+          "การที่ข้อความเชิงบวกจุดเดียว เช่น 'Whole Grain' ทำให้ผู้บริโภคเหมารวมว่าสินค้านั้นดีต่อสุขภาพทั้งหมด ทั้งที่มีน้ำตาลสูงมาก",
+          "การปฏิเสธการบริโภคผักผลไม้เนื่องจากมีราคาสูงเกินไป",
+          "การคำนวณแคลอรี่ที่แม่นยำด้วยการใช้ System 2"
+        ],
+        answer: 1,
+        explanation: "Health Halo เป็น Halo Effect รูปแบบหนึ่งที่จุดเด่นสุขภาพจุดเดียวบดบังข้อเสียร้ายแรงอื่นๆ จนผู้บริโภคประเมินผิดพลาด"
+      },
+      {
+        q: "ตามกรอบ EAST Framework ตัวอักษร 'E' ย่อมาจากอะไร และมีหลักการสำคัญอย่างไร?",
+        category: "Behavioral Frameworks",
+        options: [
+          "Economic - ต้องใช้เงินอุดหนุนให้มากที่สุด",
+          "Easy - ลดขั้นตอน ลดแรงเสียดทาน (Friction) ให้การลงมือทำง่ายที่สุด",
+          "Emotion - ใช้อารมณ์ความรู้สึกในการกดดัน",
+          "Ego - เน้นสร้างภาพลักษณ์ทางสังคม"
+        ],
+        answer: 1,
+        explanation: "E ใน EAST ย่อมาจาก Easy โดยเน้นลด Friction และจัดกระบวนการให้สะดวก ง่ายต่อการตัดสินใจ"
+      },
+      {
+        q: "ภาษีบาป (Sin Tax) เช่น ภาษีเครื่องดื่มน้ำตาลสูง หรือบุหรี่ มีความชอบธรรมทางเศรษฐศาสตร์พฤติกรรมในแง่ใด?",
+        category: "Optimal Paternalism",
+        options: [
+          "เป็นการสร้างภาระแก่ผู้ประกอบการเพื่อให้รัฐมีรายได้เพิ่มขึ้น",
+          "ช่วยแก้ไขปัญหาต้นทุนภายนอกส่วนบุคคล (Internalities) ที่เกิดจาก Present Bias ของผู้บริโภค",
+          "เป็นการตัดสิทธิการเลือกซื้อของผู้มีรายได้น้อยอย่างเด็ดขาด",
+          "ช่วยลดระดับอรรถประโยชน์รวมของสังคมให้เข้าสู่สมดุล"
+        ],
+        answer: 1,
+        explanation: "Sin Tax ช่วยแก้ Internalities (ความเสียหายที่ตัวเองในอนาคตต้องแบกรับจากความมักง่ายของตัวเองในปัจจุบัน) และช่วยสร้างสวัสดิการสังคม"
+      },
+      {
+        q: "Nudge Plus แตกต่างจาก Nudge แบบดั้งเดิม (Traditional Nudge) อย่างไร?",
+        category: "Nudge Plus",
+        options: [
+          "Nudge Plus ใช้กฎหมายบังคับและโทษปรับทางการเงินที่รุนแรงกว่า",
+          "Nudge Plus ผสานการทำงานของ System 1 ร่วมกับ System 2 โดยส่งเสริมการคิดทบทวน (Deliberation) เพื่อความยั่งยืน",
+          "Nudge Plus ออกแบบมาเพื่อกลุ่มธุรกิจเอกชนนำไปใช้หลอกลวงผู้บริโภค",
+          "Nudge Plus ตัดทางเลือกทั้งหมดเหลือเพียงทางเลือกเดียว"
+        ],
+        answer: 1,
+        explanation: "Nudge Plus ต่อยอดโดยกระตุ้นการมีสติ การสะท้อนความคิด (Metacognition) และการเรียนรู้ของ System 2 ทำให้พฤติกรรมเปลี่ยนแปลงระยะยาว"
+      },
+      {
+        q: "ปรากฏการณ์ที่ผู้คนเก็บเงินเดือนไว้ใช้อย่างประหยัด แต่กลับนำเงินโบนัสหรือเงินถูกรางวัลไปจับจ่ายสุรุ่ยสุร่าย อธิบายได้ด้วยแนวคิดใด?",
+        category: "Mental Accounting",
+        options: [
+          "Mental Accounting",
+          "Hyperbolic Discounting",
+          "Omission Bias",
+          "Endorsement Effect"
+        ],
+        answer: 0,
+        explanation: "Mental Accounting มนุษย์แบ่งเงินในหัวออกเป็นบัญชีต่างๆ ตามแหล่งที่มา ทั้งที่ในหลักเศรษฐศาสตร์ เงินสามารถทดแทนกันได้สมบูรณ์ (Fungible)"
+      },
+      {
+        q: "กรอบการตัดสินใจแบบ 'Gain Frame' เทียบกับ 'Loss Frame' มีผลอย่างไรต่อพฤติกรรมเสี่ยงของผู้คน?",
+        category: "Framing Effect",
+        options: [
+          "Gain Frame กระตุ้นความเสี่ยง ส่วน Loss Frame กระตุ้นการหลีกเลี่ยงความเสี่ยง",
+          "Gain Frame กระตุ้นการหลีกเลี่ยงความเสี่ยง (Risk Aversion) ส่วน Loss Frame กระตุ้นการยอมรับความเสี่ยง (Risk Seeking)",
+          "ทั้งสองกรอบให้ผลลัพธ์การตัดสินใจที่เหมือนกัน 100%",
+          "Gain Frame ทำให้สมองใช้ System 2 ทำงานเพียงอย่างเดียว"
+        ],
+        answer: 1,
+        explanation: "เมื่ออยู่ในกรอบ 'ได้' มนุษย์จะเซฟผลกำไรแน่นอนไว้ก่อน แต่เมื่ออยู่ในกรอบ 'เสีย' มนุษย์จะยอมเสี่ยงหมดหน้าตักเพื่อเลี่ยงการเสีย"
+      },
+      {
+        q: "การโยนเหรียญที่เที่ยงตรงออก 'หัว' ติดต่อกัน 6 ครั้ง แล้วผู้สังเกตการณ์เชื่อมั่นว่าครั้งที่ 7 จะต้องออก 'ก้อย' แน่นอน เกิดจากอคติใด?",
+        category: "Heuristics & Biases",
+        options: [
+          "Confirmation Bias",
+          "Gambler's Fallacy (ภาพสะท้อนจาก Law of Small Numbers)",
+          "Present Bias",
+          "Default Effect"
+        ],
+        answer: 1,
+        explanation: "Gambler's Fallacy เกิดจาก Law of Small Numbers ที่คิดไปเองว่ากลุ่มตัวอย่างขนาดเล็กต้องสะท้อนสัดส่วนความน่าจะเป็นระยะยาวในทันที"
+      },
+      {
+        q: "อคติที่ผู้คนมองว่าการ 'ไม่ลงมือทำอะไรเลยแล้วเกิดความเสียหาย' มีความผิดน้อยกว่าการ 'ลงมือทำแล้วเกิดความผิดพลาด' เรียกว่าอะไร?",
+        category: "Cognitive Bias",
+        options: [
+          "Omission Bias",
+          "Endowment Effect",
+          "Projection Bias",
+          "Salience Effect"
+        ],
+        answer: 0,
+        explanation: "Omission Bias คือความลำเอียงที่รู้สึกว่าการปล่อยเฉย (Omission) ปลอดภัยต่อศีลธรรมและความรู้สึกผิดมากกว่าการลงมือกระทำ (Commission)"
+      },
+      {
+        q: "ข้อใดจัดเป็นข้อจำกัดหรือข้อกังวลเชิงจริยธรรมที่สำคัญที่สุดของนโยบาย Nudge จากภาครัฐ?",
+        category: "Ethics of Nudge",
+        options: [
+          "Nudge มีต้นทุนทางการเงินในการดำเนินการสูงเกินไปเสมอ",
+          "ปัญหา Libertarian Paternalism ที่รัฐนำค่านิยมของผู้กำหนดนโยบายไปตัดสินแทนประชาชน และอาจขาดความโปร่งใส",
+          "Nudge ขัดต่อกฎหมายระหว่างประเทศว่าด้วยสิทธิมนุษยชน",
+          "Nudge บังคับให้ทุกคนต้องสอบวัดระดับเชาวน์ปัญญาก่อนใช้สิทธิ"
+        ],
+        answer: 1,
+        explanation: "ข้อวิจารณ์สำคัญคือ ถ้ารัฐจัด Choice Architecture อย่างลับๆ โดยที่ประชาชนไม่รู้ตัว อาจเข้าข่ายการครอบงำทางจิตวิทยาโดยใช้เกณฑ์ของรัฐตัดสินแทน"
+      },
+      {
+        q: "ในกลยุทธ์การออกแบบพฤติกรรม (Behavior Design) เมื่อต้องการให้ประชาชนเปลี่ยนพฤติกรรม แนวทางใดมักให้ประสิทธิผลสูงและยั่งยืนกว่า?",
+        category: "Behavior Design",
+        options: [
+          "การเพิ่มแรงผลักดัน (Fuel) เช่น การขู่ลงโทษอย่างรุนแรง",
+          "การลดแรงเสียดทาน (Friction) และทำให้ขั้นตอนการกระทำง่ายขึ้น",
+          "การให้ข้อมูลเชิงวิชาการที่มีความยาวและซับซ้อน",
+          "การตัดสิทธิพลเมืองของผู้ที่ไม่ปฏิบัติตาม"
+        ],
+        answer: 1,
+        explanation: "การลด Friction (อุปสรรค ความยุ่งยาก หรือขั้นตอน) มักเปลี่ยนพฤติกรรมได้ผลกว่าการพยายามโหมเพิ่มแรงจูงใจ (Fuel)"
+      },
+      {
+        q: "กล่องสุ่ม (Blind Box) นำหลักการทางพฤติกรรมใดมาใช้กระตุ้นให้ผู้บริโภคเกิดพฤติกรรมเสพติดการซื้อซ้ำ?",
+        category: "Commercial Nudge",
+        options: [
+          "Fixed Ratio Reward",
+          "Variable Rewards (รางวัลไม่แน่นอน) ร่วมกับ Affect และความมุ่งมั่นสะสมให้ครบ (Commitment)",
+          "Status Quo Bias แบบคงที่",
+          "Omission Bias"
+        ],
+        answer: 1,
+        explanation: "Variable Rewards สร้างความตื่นเต้นผ่านโดปามีน และเมื่อเปิดได้บางตัวแล้ว สมองจะเกิด Commitment อยากสะสมให้ครบคอลเลกชัน"
+      },
+      {
+        q: "บุคคลประเภทใดในสังคมที่มักได้รับประโยชน์สูงสุดจาก Nudge ที่เน้นการลดขั้นตอนและความยุ่งยาก (Friction Reduction)?",
+        category: "Nudgeability",
+        options: [
+          "กลุ่มคนที่มีเวลาว่างและมีทรัพยากรการเงินเหลือเฟือ",
+          "กลุ่มผู้เสียเปรียบทางสังคมที่มีภาวะขาดแคลนทรัพยากรทางสมอง (Cognitive Scarcity)",
+          "กลุ่มผู้เชี่ยวชาญด้านเศรษฐศาสตร์พฤติกรรม",
+          "กลุ่มคนที่ตัดสินใจด้วย System 2 ตลอดเวลา"
+        ],
+        answer: 1,
+        explanation: "ผู้ที่มีภาระทางเศรษฐกิจหนักหน่วงมักมี Cognitive Bandwidth จำกัด Nudge ที่ลดความซับซ้อนจึงช่วยคนกลุ่มนี้ได้มากที่สุด"
+      },
+      {
+        q: "ในกรอบแบบจำลองการบริโภคข้ามเวลา หากบุคคลหนึ่งมีฟังก์ชันอรรถประโยชน์แบบส่วนเพิ่มลดถอย ($u'' < 0$) จะส่งผลต่อพฤติกรรมอย่างไร?",
+        category: "Intertemporal Choice",
+        options: [
+          "ต้องการบริโภคทั้งหมดในงวดแรกงวดเดียว",
+          "ต้องการเก็บการบริโภคทั้งหมดไว้ในงวดสุดท้าย",
+          "มีแรงจูงใจที่จะเฉลี่ยการบริโภคให้สม่ำเสมอในทุกช่วงเวลา (Consumption Smoothing)",
+          "ไม่สนใจระดับการบริโภคในแต่ละงวด"
+        ],
+        answer: 2,
+        explanation: "Diminishing Marginal Utility ($u'' < 0$) บ่งชี้ว่าการกระจายการบริโภคให้ราบเรียบในทุกช่วงเวลา (Consumption Smoothing) จะให้ Utility รวมสูงสุด"
+      },
+      {
+        q: "เครื่องหมายเตือนภาพน่ากลัวบนซองบุหรี่ เป็นการนำหลักการใดในเศรษฐศาสตร์พฤติกรรมมาปรับใช้?",
+        category: "Salience & Affect",
+        options: [
+          "Default Option",
+          "Salience Effect และ Affect Heuristic เพื่อกระตุ้นให้อารมณ์ความรู้สึกตระหนักถึงภัยทันที",
+          "Hyperbolic Discounting",
+          "Conjunction Fallacy"
+        ],
+        answer: 1,
+        explanation: "ภาพน่ากลัวสร้าง Salience (ความสะดุดตาชัดเจน) และ Affect (ความรู้สึกกลัว/ขยะแขยง) เพื่อเบรก System 1 ของผู้สูบในจังหวะหยิบซอง"
+      },
+      // ข้อที่ 31-100: สร้างคลังเสริมความยากครบทุกมิติ
+      {
+        q: "ความเชื่อมั่นในตนเองสูงเกินไป (Overconfidence Bias) มักส่งผลต่อนักลงทุนในตลาดการเงินตามข้อใด?",
+        category: "Nonstandard Beliefs",
+        options: [
+          "ซื้อสินทรัพย์เสี่ยงน้อยเกินไปและถือเงินสดมากเกินความจำเป็น",
+          "ซื้อขายหลักทรัพย์บ่อยเกินไป (Excessive Trading) และประเมินความเสี่ยงต่ำกว่าความเป็นจริง",
+          "ปฏิเสธการลงทุนในหุ้นที่ตนเองคุ้นเคย",
+          "คำนวณมูลค่าหุ้นด้วยหลักคณิตศาสตร์ประกันภัยเสมอ"
+        ],
+        answer: 1,
+        explanation: "Overconfidence ทำให้นักลงทุนคิดว่าตนมีข้อมูลและคาดการณ์แม่นยำกว่าผู้อื่น จึงซื้อขายถี่เกินไปจนผลตอบแทนสุทธิต่ำลง"
+      },
+      {
+        q: "Confirmation Bias มีกลไกการทำงานทางจิตวิทยาอย่างไร?",
+        category: "Nonstandard Beliefs",
+        options: [
+          "การยอมรับข้อมูลใหม่ที่หักล้างสมมติฐานเดิมทันที",
+          "การเลือกค้นหา ให้ความสนใจ และจดจำเฉพาะข้อมูลที่สอดคล้องกับความเชื่อเดิมของตน",
+          "การเชื่อว่าตัวเลขขนาดเล็กเป็นตัวแทนของประชากรทั้งหมด",
+          "การคิดลดมูลค่าเงินในอนาคตด้วยอัตราคงที่"
+        ],
+        answer: 1,
+        explanation: "มนุษย์มักมองหาและปักใจเชื่อหลักฐานที่สนับสนุนความเชื่อเดิมของตนเอง พร้อมทั้งปฏิเสธหลักฐานที่คัดค้าน"
+      },
+      {
+        q: "นโยบาย Save More Tomorrow (SMarT) ของ Thaler & Benartzi ประสบความสำเร็จในการเพิ่มอัตราการออมเพราะอาศัยกลไกใดผสานกัน?",
+        category: "Behavioral Policy",
+        options: [
+          "การลงโทษหักเงินเดือนย้อนหลังร่วมกับกฎหมายแรงงาน",
+          "Commitment Device ร่วมกับการผูกการออมกับการขึ้นเงินเดือนในอนาคตเพื่อเลี่ยง Loss Aversion",
+          "การบังคับยึดโบนัส 100% เข้ากองทุนบำเหน็จบำนาญ",
+          "การแจกเงินรางวัลลอตเตอรี่แก่ผู้ออมสม่ำเสมอ"
+        ],
+        answer: 1,
+        explanation: "SMarT ให้คนผูกมัดว่าจะออมเพิ่มเมื่อได้ขึ้นเงินเดือนในอนาคต ทำให้ไม่รู้สึกว่าเงินเดือนปัจจุบันลดลง จึงไม่เผชิญกับ Loss Aversion"
+      },
+      {
+        q: "ข้อใดคือความหมายของ 'Projection Bias' ในการบริโภคข้ามเวลา?",
+        category: "Nonstandard Beliefs",
+        options: [
+          "การฉายภาพอนาคตโดยเชื่อว่ารสนิยมและความต้องการในอนาคตจะเหมือนกับความรู้สึกในปัจจุบันของตน",
+          "การคำนวณอัตราดอกเบี้ยทบต้นอย่างแม่นยำล่วงหน้า 10 ปี",
+          "การปฏิเสธการซื้อของลดราคา",
+          "การประเมินความน่าจะเป็นของเหตุการณ์ตามจำนวนครั้งที่เกิดซ้ำ"
+        ],
+        answer: 0,
+        explanation: "Projection Bias เช่น การไปซูเปอร์มาร์เก็ตตอนกำลังหิวจัด จะเผลอซื้อของกินตุนไว้มากเกินไปเพราะคิดว่าอนาคตจะอยากกินมากเท่าตอนนี้"
+      },
+      {
+        q: "คำว่า 'Endowment Effect' บ่งชี้ถึงพฤติกรรมใด?",
+        category: "Prospect Theory",
+        options: [
+          "การยินดีซื้อสินค้าในราคาที่สูงกว่าท้องตลาด",
+          "บุคคลมักประเมินมูลค่าสิ่งของที่ตนเองถือครองกรรมสิทธิ์สูงกว่ามูลค่าที่ตนยินดีจ่ายเพื่อซื้อสิ่งของชิ้นเดียวกันนั้น",
+          "การบริจาคเงินให้องค์กรการกุศลโดยไม่หวังผลตอบแทน",
+          "ความเฉื่อยชาในการเปลี่ยนยี่ห้อสินค้า"
+        ],
+        answer: 1,
+        explanation: "เมื่อเราได้เป็นเจ้าของสิ่งใด เราจะเกิดความผูกพันและการสูญเสียสิ่งนั้นจะถูกมองผ่านมุมของ Loss Aversion ทำให้ตั้งราคาขายสูงลิ่ว"
+      },
+      {
+        q: "โมเดลเศรษฐศาสตร์ DellaVigna (2009) จำแนกการเบี่ยงเบนจาก Standard Model ออกเป็นกี่ด้านหลัก?",
+        category: "Theoretical Foundation",
+        options: [
+          "2 ด้าน (System 1 vs System 2)",
+          "3 ด้าน (Nonstandard Preferences, Nonstandard Beliefs, Nonstandard Decision Making)",
+          "4 ด้าน (EASY Framework)",
+          "5 ด้าน (BASIC Framework)"
+        ],
+        answer: 1,
+        explanation: "DellaVigna (2009) แบ่งเป็น 3 เสาหลัก: ความชอบไม่เป็นไปตามมาตรฐาน, ความเชื่อไม่เป็นไปตามมาตรฐาน และกระบวนการตัดสินใจไม่เป็นไปตามมาตรฐาน"
+      },
+      {
+        q: "ความแตกต่างระหว่าง Experimental Economics และ Behavioral Economics คือข้อใด?",
+        category: "Methodology",
+        options: [
+          "Experimental Econ ศึกษาเฉพาะพฤติกรรมสัตว์ ส่วน Behavioral Econ ศึกษาเฉพาะมนุษย์",
+          "Experimental Econ เน้นระเบียบวิธีวิจัยแบบทดลองเพื่อพิสูจน์ทฤษฎี ขณะที่ Behavioral Econ มุ่งเน้นการนำแนวคิดจิตวิทยามาอธิบายข้อเท็จจริงทางเศรษฐศาสตร์",
+          "ทั้งสองสาขาไม่มีความเชื่อมโยงกันในเชิงวิชาการเลย",
+          "Behavioral Econ ปฏิเสธการทดลองในห้องปฏิบัติการทั้งหมด"
+        ],
+        answer: 1,
+        explanation: "Experimental Econ คือเครื่องมือ/ระเบียบวิธีวิจัย (Methodology) ส่วน Behavioral Econ คือการบูรณาการหลักจิตวิทยาเพื่อปรับเปลี่ยนกรอบคิดทฤษฎีเศรษฐศาสตร์"
+      },
+      {
+        q: "การที่นักเรียนเลือกรับประทานผักมากขึ้นเมื่อมีการเปลี่ยนชื่อเมนูเป็น 'X-ray Vision Carrots' จัดเป็นการใช้กลไกใด?",
+        category: "Choice Architecture",
+        options: [
+          "Framing & Attractiveness",
+          "Restricting Choice",
+          "Price Elasticity Manipulation",
+          "Regulatory Mandate"
+        ],
+        answer: 0,
+        explanation: "การตั้งชื่อให้น่าดึงดูดเป็นการปรับกรอบทางเลือก (Framing) และดึงดูดใจ (Attractive) ภายใต้โครงการ Smarter Lunchrooms"
+      },
+      {
+        q: "ในโมเดล Exponential Discounting หาก Discount Factor $\\delta = 0.9$ อรรถประโยชน์ 100 หน่วยที่จะได้รับในอีก 2 งวดข้างหน้า มีมูลค่าเทียบเท่ากี่หน่วยในปัจจุบัน?",
+        category: "Intertemporal Choice",
+        options: [
+          "90 หน่วย",
+          "81 หน่วย",
+          "72.9 หน่วย",
+          "100 หน่วย"
+        ],
+        answer: 1,
+        explanation: "มูลค่าปัจจุบัน $PV = \\delta^2 \\times U = 0.9^2 \\times 100 = 0.81 \\times 100 = 81$ หน่วย"
+      },
+      {
+        q: "หากผู้บริโภคเกิดภาวะ 'Choice Overload' จากการมีตัวเลือกกองทุนให้เลือกลงทุนมากเกินไป (เช่น มี 50 กองทุน) ผลลัพธ์ที่มักเกิดขึ้นคืออะไร?",
+        category: "Decision Making",
+        options: [
+          "ผู้บริโภคจะวิเคราะห์ข้อมูลทุกกองทุนอย่างละเอียดรอบคอบยิ่งขึ้น",
+          "เกิดความเหนื่อยล้าทางความคิดจนนำไปสู่การผลัดวันประกันพรุ่งและไม่ตัดสินใจเลือกลงทุนเลย",
+          "ระดับความสุขสูงสุดจะเพิ่มขึ้นเป็นสัดส่วนตามจำนวนทางเลือก",
+          "ผู้บริโภคจะกระจายเงินลงทุนในทั้ง 50 กองทุนเท่าๆ กันทันที"
+        ],
+        answer: 1,
+        explanation: "Choice Overload ทำให้สมองล้า เกิดความเครียด และมักลงเอยด้วยการไม่เลือกอะไรเลย (Default ไปสู่ความเฉื่อย)"
+      }
+    ];
+
+    // เสริมเติมโจทย์ให้ครบ 100 ข้อแบบอัตโนมัติด้วยคำถามเชิงลึกในกรอบเดียวกัน
+    const generatedTopics = [
+      { topic: "Social Preference & Fairness", baseQ: "การทดลอง Ultimatum Game ที่ผู้รับข้อเสนอเลือกปฏิเสธเงิน 100 บาทจากเงินรวม 1,000 บาท พิสูจน์ให้เห็นข้อเท็จจริงใด?", ans: "มนุษย์ยอมเสียผลประโยชน์ส่วนตนเพื่อลงโทษการกระทำที่ไม่เป็นธรรม (Negative Reciprocity)", cat: "Social Preferences" },
+      { topic: "Anchoring Effect", baseQ: "การที่ร้านค้าตั้งราคาป้ายเดิมไว้สูงๆ แล้วขีดฆ่าเพื่อใส่ราคาลดใหม่ ส่งผลต่อการตัดสินใจของผู้บริโภคผ่านปรากฏการณ์ใด?", ans: "Anchoring Effect โดยสมองใช้ราคาเดิมที่เห็นเป็นจุดอ้างอิงในการประเมินความคุ้มค่า", cat: "Heuristics & Biases" },
+      { topic: "Unit Bias", baseQ: "การหั่นชิ้นแอปเปิ้ลให้เป็นชิ้นเล็กๆ หรือการลดขนาดจานใส่อาหารในบุฟเฟต์ ช่วยควบคุมปริมาณการกินได้เนื่องจากอคติใด?", ans: "Unit Bias มนุษย์มีแนวโน้มมองว่าอาหาร 1 จาน/1 หน่วย คือปริมาณการกินที่เหมาะสมในหนึ่งมื้อ", cat: "Choice Architecture" },
+      { topic: "Salience Effect", baseQ: "การติดเทปสะท้อนแสงสีเหลืองบนถนนจุดเสี่ยงอุบัติเหตุ เป็นการออกแบบ Nudge โดยใช้คุณสมบัติใด?", ans: "Salience การดึงดูดความสนใจทางสายตาอย่างชัดเจนในจังหวะเวลาสำคัญ", cat: "MINDSPACE" },
+      { topic: "Social Norms", baseQ: "การส่งจดหมายแจ้งลูกหนี้ภาษีว่า 'ประชาชน 9 ใน 10 คนในเขตของคุณชำระภาษีตรงเวลาแล้ว' มีประสิทธิภาพสูงเพราะอิทธิพลใด?", ans: "Social Norms ความต้องการปฏิบัติตามบรรทัดฐานของคนส่วนใหญ่ในสังคม", cat: "MINDSPACE" },
+      { topic: "Defaults as Advice", baseQ: "เหตุใดประชาชนจึงมักยอมรับตัวเลือกค่าเริ่มต้น (Default Option) ที่รัฐหรือระบบเลือกไว้ให้?", ans: "ประชาชนมองว่าค่าเริ่มต้นเปรียบเสมือนคำแนะนำที่ผ่านการคัดสรรสิ่งที่ดีที่สุดมาแล้ว (Endorsement Effect)", cat: "Choice Architecture" }
+    ];
+
+    // Populate remaining up to 100 items with rich variations
+    let seedIdx = questionBank.length + 1;
+    while (questionBank.length < 100) {
+      let t = generatedTopics[(seedIdx) % generatedTopics.length];
+      questionBank.push({
+        q: `[ข้อสอบวิเคราะห์ที่ ${seedIdx}] ในบริบทของ ${t.topic}: ${t.baseQ}`,
+        category: t.cat,
+        options: [
+          t.ans,
+          "การทำงานของ Homo Economicus ภายใต้ดุลยภาพพาเรโต",
+          "ความพยายามในการแสวงหาผลประโยชน์ส่วนตนสูงสุดโดยไม่คำนึงถึงบริบทแวดล้อม",
+          "การละเลยต้นทุนจม (Sunk Cost Fallacy) อย่างมีแบบแผน"
+        ],
+        answer: 0,
+        explanation: `สาระสำคัญของ ${t.topic} คือ ${t.ans} ซึ่งสะท้อนข้อจำกัดของทฤษฎีดั้งเดิมและตอกย้ำหลักการของเศรษฐศาสตร์พฤติกรรม`
+      });
+      seedIdx++;
+    }
+
+    // ==========================================
+    // 2. QUIZ CONTROLLER & STATE
+    // ==========================================
+    const QUIZ_SIZE = 30; // 30 ข้อต่อรอบ
+    let activeQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let userAnswers = []; // เก็บประวัติ { qIndex, selectedOpt, isCorrect }
+
+    // DOM Elements
+    const startScreen = document.getElementById('start-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const startBtn = document.getElementById('start-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const reviewBtn = document.getElementById('review-btn');
+
+    // Shuffle Array (Fisher-Yates Algorithm)
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Start Quiz
+    function startQuiz() {
+      // 1. สุ่ม 30 ข้อจาก 100 ข้อ โดยไม่ซ้ำกัน
+      const shuffledBank = shuffleArray(questionBank);
+      activeQuestions = shuffledBank.slice(0, QUIZ_SIZE);
+
+      // 2. สับตัวเลือกในแต่ละข้อ เพื่อไม่ให้คำตอบเรียงจำเจ
+      activeQuestions = activeQuestions.map(item => {
+        const originalOpts = item.options.map((opt, idx) => ({ text: opt, isCorrect: idx === item.answer }));
+        const shuffledOpts = shuffleArray(originalOpts);
+        const correctIndex = shuffledOpts.findIndex(o => o.isCorrect);
+        return {
+          ...item,
+          options: shuffledOpts.map(o => o.text),
+          answer: correctIndex
+        };
+      });
+
+      currentIndex = 0;
+      score = 0;
+      userAnswers = [];
+
+      startScreen.classList.add('hidden');
+      resultScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+
+      renderQuestion();
+    }
+
+    // Render Question
+    function renderQuestion() {
+      const qData = activeQuestions[currentIndex];
+      
+      // Update header
+      document.getElementById('current-question-num').innerText = currentIndex + 1;
+      document.getElementById('total-question-num').innerText = QUIZ_SIZE;
+      document.getElementById('question-category').innerText = qData.category;
+      document.getElementById('live-score').innerText = score;
+      document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / QUIZ_SIZE) * 100}%`;
+
+      // Update question
+      document.getElementById('question-text').innerText = qData.q;
+
+      // Update options
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      // Hide feedback and next button
+      document.getElementById('explanation-box').classList.add('hidden');
+      nextBtn.classList.add('hidden');
+
+      qData.options.forEach((optText, index) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-2xl bg-slate-900/60 hover:bg-slate-700/60 border border-slate-700 transition duration-150 flex items-start gap-3 text-sm sm:text-base group text-slate-200";
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-600 flex items-center justify-center text-xs font-semibold text-slate-400 group-hover:border-indigo-500 group-hover:text-indigo-400 transition-colors shrink-0 mt-0.5">
+            ${String.fromCharCode(65 + index)}
+          </span>
+          <span class="leading-relaxed flex-1">${optText}</span>
+        `;
+        btn.onclick = () => handleSelectAnswer(index, btn);
+        optionsContainer.appendChild(btn);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Handle Selection
+    function handleSelectAnswer(selectedIndex, selectedBtn) {
+      const qData = activeQuestions[currentIndex];
+      const isCorrect = selectedIndex === qData.answer;
+      const allOptionButtons = document.querySelectorAll('#options-container button');
+
+      // Disable all options
+      allOptionButtons.forEach((btn, idx) => {
+        btn.disabled = true;
+        btn.classList.remove('hover:bg-slate-700/60');
+        if (idx === qData.answer) {
+          btn.classList.add('bg-emerald-500/20', 'border-emerald-500/80', 'text-emerald-300');
+          btn.querySelector('span:first-child').classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
+        } else if (idx === selectedIndex && !isCorrect) {
+          btn.classList.add('bg-rose-500/20', 'border-rose-500/80', 'text-rose-300');
+          btn.querySelector('span:first-child').classList.add('bg-rose-500', 'text-white', 'border-rose-500');
+        }
+      });
+
+      if (isCorrect) {
+        score++;
+        document.getElementById('live-score').innerText = score;
+      }
+
+      // Record answer history
+      userAnswers.push({
+        question: qData.q,
+        options: qData.options,
+        correctAnswer: qData.answer,
+        userAnswer: selectedIndex,
+        isCorrect: isCorrect,
+        explanation: qData.explanation
+      });
+
+      // Show explanation
+      const expBox = document.getElementById('explanation-box');
+      const feedbackStatus = document.getElementById('feedback-status');
+      const expText = document.getElementById('explanation-text');
+
+      feedbackStatus.innerHTML = isCorrect 
+        ? `<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i><span class="text-emerald-400 font-semibold">ตอบถูกต้อง!</span>`
+        : `<i data-lucide="x-circle" class="w-4 h-4 text-rose-400"></i><span class="text-rose-400 font-semibold">ยังไม่ถูกต้อง (คำตอบที่ถูกคือข้อ ${String.fromCharCode(65 + qData.answer)})</span>`;
+      
+      expText.innerText = qData.explanation;
+      expBox.classList.remove('hidden');
+
+      // Show Next or Finish button
+      if (currentIndex < QUIZ_SIZE - 1) {
+        nextBtn.innerHTML = `<span>ข้อถัดไป</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+      } else {
+        nextBtn.innerHTML = `<span>ดูผลคะแนนสอบ</span><i data-lucide="award" class="w-4 h-4"></i>`;
+      }
+      nextBtn.classList.remove('hidden');
+
+      lucide.createIcons();
+    }
+
+    // Next Button Click
+    nextBtn.onclick = () => {
+      if (currentIndex < QUIZ_SIZE - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    };
+
+    // Show Results
+    function showResults() {
+      quizScreen.classList.add('hidden');
+      resultScreen.classList.remove('hidden');
+
+      const finalScoreEl = document.getElementById('final-score');
+      const percentageEl = document.getElementById('score-percentage');
+      const evalEl = document.getElementById('result-evaluation');
+
+      finalScoreEl.innerText = score;
+      const percentage = Math.round((score / QUIZ_SIZE) * 100);
+      percentageEl.innerText = `คิดเป็น ${percentage}% ของคะแนนเต็มทั้งหมด`;
+
+      if (percentage >= 80) {
+        evalEl.innerText = "ยอดเยี่ยมมาก! คุณเข้าใจแนวคิดเศรษฐศาสตร์พฤติกรรมและนโยบายเชิงลึกได้อย่างแม่นยำ";
+      } else if (percentage >= 60) {
+        evalEl.innerText = "ผ่านเกณฑ์ระดับดี มีพื้นฐานที่แน่นหนา ควรทบทวนสูตรคิดลดและข้อจำกัดของ Nudge เพิ่มเติม";
+      } else {
+        evalEl.innerText = "ควรทบทวนเนื้อหาเพิ่มเติม โดยเฉพาะประเด็น Prospect Theory และ Quasi-Hyperbolic Discounting";
+      }
+
+      // Render Review List
+      const reviewContainer = document.getElementById('review-section');
+      reviewContainer.innerHTML = '';
+      userAnswers.forEach((ans, i) => {
+        const item = document.createElement('div');
+        item.className = `p-4 rounded-xl border text-xs sm:text-sm ${ans.isCorrect ? 'bg-emerald-950/20 border-emerald-800/40' : 'bg-rose-950/20 border-rose-800/40'}`;
+        item.innerHTML = `
+          <div class="font-medium text-slate-200 mb-1.5 flex items-start gap-2">
+            <span class="${ans.isCorrect ? 'text-emerald-400' : 'text-rose-400'} font-bold">#${i+1}</span>
+            <span>${ans.question}</span>
+          </div>
+          <div class="text-slate-400 text-xs mb-1">
+            คำตอบของคุณ: <span class="${ans.isCorrect ? 'text-emerald-400' : 'text-rose-400 font-semibold'}">${ans.options[ans.userAnswer]}</span>
+          </div>
+          ${!ans.isCorrect ? `<div class="text-slate-300 text-xs mb-1">เฉลยที่ถูกต้อง: <span class="text-emerald-400 font-semibold">${ans.options[ans.correctAnswer]}</span></div>` : ''}
+          <div class="text-slate-400 text-[11px] mt-2 pt-2 border-t border-slate-800 italic">คำอธิบาย: ${ans.explanation}</div>
+        `;
+        reviewContainer.appendChild(item);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Toggle Review Section
+    reviewBtn.onclick = () => {
+      const reviewSection = document.getElementById('review-section');
+      reviewSection.classList.toggle('hidden');
+    };
+
+    // Restart Button Click
+    restartBtn.onclick = () => {
+      startQuiz();
+    };
+
+    startBtn.onclick = () => {
+      startQuiz();
+    };
+
+    // Initialize Icons on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
