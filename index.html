@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Behavioral Economics & Public Policy: Midterm Masterclass</title>
   
-  <!-- Tailwind CSS CDN with dark mode config -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -29,8 +29,8 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
-  <!-- Chart.js for Interactive Economic Visualizations -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js (ใช้เวอร์ชัน UMD ที่เสถียรที่สุด) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <!-- MathJax CDN for LaTeX Math Rendering -->
   <script>
@@ -56,7 +56,7 @@
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 selection:bg-indigo-500 selection:text-white">
 
   <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-50 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
@@ -68,9 +68,8 @@
         </div>
       </div>
 
-      <!-- Navigation & Controls -->
+      <!-- Navigation & Theme Switcher -->
       <div class="flex items-center gap-2">
-        <!-- View Switch Buttons -->
         <nav class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
           <button id="nav-book-btn" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -82,10 +81,11 @@
           </button>
         </nav>
 
-        <!-- Light / Dark Theme Toggle Button -->
-        <button id="theme-toggle" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center justify-center transition shadow-sm">
-          <i data-lucide="moon" id="theme-moon" class="w-4 h-4 hidden"></i>
-          <i data-lucide="sun" id="theme-sun" class="w-4 h-4"></i>
+        <!-- Fixed Theme Toggle Button -->
+        <button id="theme-toggle" type="button" aria-label="Toggle Theme" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition shadow-sm cursor-pointer">
+          <span id="theme-icon-container">
+            <i data-lucide="sun" class="w-4 h-4"></i>
+          </span>
         </button>
       </div>
     </div>
@@ -113,7 +113,7 @@
             </span>
           </h1>
           <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-light mb-6">
-            ศึกษากลไกการทำงานของสมองมนุษย์ที่ตัดสินใจเบี่ยงเบนอย่างมีระบบ (Systematically Biased), แบบจำลอง Prospect Theory, 3 เสาหลักความลำเอียงของ DellaVigna, สถาปัตยกรรมการสะกิดพฤติกรรม Nudge, MINDSPACE, EAST Framework ไปจนถึงแบบจำลองการควบคุมตนเองและการบริโภคข้ามเวลา Quasi-Hyperbolic Discounting ($\beta$-$\delta$)
+            ทำความเข้าใจความบกพร่องเชิงโครงสร้างของสมองมนุษย์ (Systematic Biases), แบบจำลอง Prospect Theory, 3 เสาหลักความลำเอียงของ DellaVigna, สถาปัตยกรรมทางเลือก Nudge, MINDSPACE, EAST Framework ไปจนถึงแบบจำลองการบริโภคข้ามเวลา Quasi-Hyperbolic Discounting ($\beta$-$\delta$) พร้อมกราฟจำลอง Interactive ที่ทำงานได้อย่างเสถียร
           </p>
           <div class="flex flex-wrap gap-2.5">
             <a href="#sec-ch1" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 transition flex items-center gap-1.5">
@@ -148,10 +148,10 @@
               <i data-lucide="user-check" class="w-4 h-4"></i> Homo Economicus (Econs / เศรษฐศาสตร์ดั้งเดิม)
             </h3>
             <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2 font-light list-disc list-inside">
-              <li><strong>Perfect Rationality:</strong> มีเหตุผล 100% ประมวลผลข้อมูลที่มีทั้งหมดได้อย่างแม่นยำ ไร้อคติ[cite: 1]</li>
-              <li><strong>Expected Utility Maximizer:</strong> ตัดสินใจเพื่อ $\max \sum p(s) U(x|s)$ ภายใต้ทรัพยากรจำกัดเสมอ[cite: 1]</li>
+              <li><strong>Perfect Rationality:</strong> มีเหตุผล 100% ประมวลผลข้อมูลที่มีทั้งหมดได้อย่างแม่นยำ ไร้อคติ</li>
+              <li><strong>Expected Utility Maximizer:</strong> ตัดสินใจเพื่อ $\max \sum p(s) U(x|s)$ ภายใต้ทรัพยากรจำกัดเสมอ</li>
               <li><strong>Time Consistency:</strong> แผนที่วางไว้สำหรับอนาคต จะถูกปฏิบัติตามอย่างเคร่งครัดเมื่อเวลานั้นมาถึง[cite: 1]</li>
-              <li><strong>Pure Self-Interest:</strong> คัดเลือกทางเลือกเพื่อประโยชน์ส่วนตนเป็นหลัก ไม่นำอารมณ์ความเกลียดชังมาแทรกแซง[cite: 1]</li>
+              <li><strong>Pure Self-Interest:</strong> สนใจเฉพาะผลประโยชน์ส่วนตน ไม่นำอารมณ์ความเกลียดชังมาแทรกแซง[cite: 1]</li>
               <li><strong>Framing Independence:</strong> การนำเสนอข้อมูล กรอบคำพูด หรือลำดับตัวเลือก ไม่มีผลต่อการตัดสินใจ[cite: 1]</li>
             </ul>
           </div>
@@ -161,10 +161,10 @@
               <i data-lucide="user-x" class="w-4 h-4"></i> Homo Sapiens (Humans / มนุษย์จริง)
             </h3>
             <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2 font-light list-disc list-inside">
-              <li><strong>Bounded Rationality:</strong> พลังสมองมีจำกัด จึงต้องใช้ทางลัดทางความคิด (Heuristics) ในการตัดสินใจ[cite: 1]</li>
-              <li><strong>Systematically Biased:</strong> มีความผิดพลาดและอคติที่เป็นระบบและสามารถคาดเดาแบบแผนได้[cite: 1]</li>
-              <li><strong>Time Inconsistent (Present Bias):</strong> วางแผนอนาคตอย่างดี แต่เมื่อถึงเวลาจริงกลับแพ้ต่อสิ่งเร้าเฉพาะหน้า[cite: 1]</li>
-              <li><strong>Social Preferences:</strong> ใส่ใจความเป็นธรรม (Fairness) ยอมเสียผลประโยชน์ตนเองเพื่อลงโทษคนที่ไม่ยุติธรรม[cite: 1]</li>
+              <li><strong>Bounded Rationality:</strong> พลังสมองมีจำกัด จึงต้องพึ่งพาทางลัดทางความคิด (Heuristics) ในการตัดสินใจ[cite: 1]</li>
+              <li><strong>Systematically Biased:</strong> มีความผิดพลาดและอคติที่เป็นระบบและคาดเดาแบบแผนได้[cite: 1]</li>
+              <li><strong>Time Inconsistent (Present Bias):</strong> วางแผนอย่างดี แต่เมื่อถึงเวลาจริงกลับแพ้ต่อสิ่งเร้าเฉพาะหน้า[cite: 1]</li>
+              <li><strong>Social Preferences:</strong> แคร์เรื่องความเป็นธรรม (Fairness) ยอมเสียผลประโยชน์ตนเองเพื่อลงโทษคนที่ไม่ยุติธรรม[cite: 1]</li>
               <li><strong>Framing Vulnerability:</strong> ตัดสินใจเปลี่ยนไปทันทีเมื่อเปลี่ยนกรอบการนำเสนอจาก ได้ เป็น เสีย[cite: 1]</li>
             </ul>
           </div>
@@ -214,7 +214,7 @@
           </div>
         </div>
 
-        <!-- Section 1.3: Prospect Theory Interactive Canvas -->
+        <!-- Section 1.3: Prospect Theory Chart Container (Fixed Height) -->
         <div class="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
@@ -229,7 +229,7 @@
           </div>
 
           <!-- Chart Area -->
-          <div class="h-64 sm:h-72 w-full bg-white dark:bg-slate-900/90 rounded-xl p-3 border border-slate-200 dark:border-slate-800 relative">
+          <div class="w-full bg-white dark:bg-slate-900/90 rounded-xl p-4 border border-slate-200 dark:border-slate-800 relative" style="height: 320px;">
             <canvas id="prospectChart"></canvas>
           </div>
 
@@ -454,13 +454,13 @@
             </div>
           </div>
 
-          <!-- Interactive Discounting Canvas -->
+          <!-- Interactive Discounting Canvas (Fixed Height) -->
           <div class="space-y-2 pt-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">กราฟเปรียบเทียบอัตราคิดลดมูลค่าเงินในอนาคต (Relative Value of 100 Utility)</span>
               <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">กำหนด $\delta = 0.9, \beta = 0.6$</span>
             </div>
-            <div class="h-64 sm:h-72 w-full bg-white dark:bg-slate-900/90 rounded-xl p-3 border border-slate-200 dark:border-slate-800 relative">
+            <div class="w-full bg-white dark:bg-slate-900/90 rounded-xl p-4 border border-slate-200 dark:border-slate-800 relative" style="height: 320px;">
               <canvas id="discountChart"></canvas>
             </div>
           </div>
@@ -525,7 +525,7 @@
 
       <!-- CTA TO QUIZ -->
       <section class="text-center py-8">
-        <button id="goto-quiz-btn" class="px-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-indigo-600 via-sky-500 to-teal-400 text-white shadow-xl shadow-indigo-600/20 hover:opacity-95 transition transform hover:-translate-y-0.5">
+        <button id="goto-quiz-btn" class="px-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-indigo-600 via-sky-500 to-teal-400 text-white shadow-xl shadow-indigo-600/20 hover:opacity-95 transition transform hover:-translate-y-0.5 cursor-pointer">
           อ่านทบทวนครบแล้ว $\rightarrow$ เริ่มทำข้อสอบจำลอง 30 ข้อ (สุ่มจาก 100 ข้อ)
         </button>
       </section>
@@ -560,7 +560,7 @@
           </div>
         </div>
 
-        <button id="quiz-run-btn" class="w-full sm:w-auto px-10 py-3.5 rounded-2xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition">
+        <button id="quiz-run-btn" class="w-full sm:w-auto px-10 py-3.5 rounded-2xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition cursor-pointer">
           เริ่มสุ่มทำข้อสอบทันที
         </button>
       </div>
@@ -605,7 +605,7 @@
 
         <!-- Bottom Controller -->
         <div class="flex items-center justify-end pt-2">
-          <button id="quiz-next-btn" class="hidden px-6 py-2.5 rounded-xl font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-2 text-sm shadow-md">
+          <button id="quiz-next-btn" class="hidden px-6 py-2.5 rounded-xl font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-2 text-sm shadow-md cursor-pointer">
             <span>ข้อถัดไป</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
@@ -631,10 +631,10 @@
         </div>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <button id="quiz-toggle-review-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs sm:text-sm transition flex items-center justify-center gap-2">
+          <button id="quiz-toggle-review-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer">
             <i data-lucide="list" class="w-4 h-4 text-indigo-500"></i> ดูเฉลยละเอียดทั้ง 30 ข้อ
           </button>
-          <button id="quiz-retry-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-teal-500 hover:opacity-95 text-white font-medium text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md">
+          <button id="quiz-retry-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-teal-500 hover:opacity-95 text-white font-medium text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
             <i data-lucide="rotate-ccw" class="w-4 h-4"></i> สุ่มทำข้อสอบชุดใหม่
           </button>
         </div>
@@ -657,50 +657,54 @@
   <!-- ================= SCRIPT LOGIC ================= -->
   <script>
     // -------------------------------------------------------------
-    // 1. THEME SWITCHER (Light / Dark Mode)
+    // 1. ROBUST THEME SWITCHER (Light / Dark Mode)
     // -------------------------------------------------------------
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeMoon = document.getElementById('theme-moon');
-    const themeSun = document.getElementById('theme-sun');
-    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIconContainer = document.getElementById('theme-icon-container');
+    const htmlRoot = document.documentElement;
 
     function applyTheme(isDark) {
       if (isDark) {
-        htmlEl.classList.add('dark');
-        themeMoon.classList.remove('hidden');
-        themeSun.classList.add('hidden');
-        localStorage.setItem('theme', 'dark');
+        htmlRoot.classList.add('dark');
+        themeIconContainer.innerHTML = '<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>';
+        localStorage.setItem('be_theme', 'dark');
       } else {
-        htmlEl.classList.remove('dark');
-        themeMoon.classList.add('hidden');
-        themeSun.classList.remove('hidden');
-        localStorage.setItem('theme', 'light');
+        htmlRoot.classList.remove('dark');
+        themeIconContainer.innerHTML = '<i data-lucide="moon" class="w-4 h-4 text-slate-700"></i>';
+        localStorage.setItem('be_theme', 'light');
       }
+      if (window.lucide) lucide.createIcons();
       updateChartsTheme(isDark);
     }
 
-    // Check system preference or localStorage
-    const savedTheme = localStorage.getItem('theme');
+    // Init Theme based on localStorage or default dark
+    const storedTheme = localStorage.getItem('be_theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
+    const initialDark = storedTheme ? (storedTheme === 'dark') : prefersDark;
+    applyTheme(initialDark);
 
-    themeToggle.onclick = () => {
-      const isDark = htmlEl.classList.contains('dark');
-      applyTheme(!isDark);
-    };
+    themeToggleBtn.addEventListener('click', () => {
+      const isCurrentlyDark = htmlRoot.classList.contains('dark');
+      applyTheme(!isCurrentlyDark);
+    });
 
     // -------------------------------------------------------------
-    // 2. CHART INITIALIZATIONS WITH THEME AWARENESS
+    // 2. CHART INITIALIZATION (Reliable Canvas Loading)
     // -------------------------------------------------------------
     let prospectChartInstance = null;
     let discountChartInstance = null;
 
-    function initCharts() {
-      const isDark = htmlEl.classList.contains('dark');
-      const gridColor = isDark ? '#1e293b' : '#e2e8f0';
-      const tickColor = isDark ? '#64748b' : '#94a3b8';
+    function createOrUpdateCharts() {
+      if (typeof Chart === 'undefined') {
+        console.error("Chart.js failed to load.");
+        return;
+      }
 
-      // 2.1 Prospect Theory Chart
+      const isDark = htmlRoot.classList.contains('dark');
+      const gridColor = isDark ? '#1e293b' : '#e2e8f0';
+      const tickColor = isDark ? '#94a3b8' : '#64748b';
+
+      // 2.1 Prospect Chart
       const ctxProspect = document.getElementById('prospectChart');
       if (ctxProspect) {
         const xValues = [];
@@ -714,6 +718,10 @@
           }
         }
 
+        if (prospectChartInstance) {
+          prospectChartInstance.destroy();
+        }
+
         prospectChartInstance = new Chart(ctxProspect, {
           type: 'line',
           data: {
@@ -722,7 +730,7 @@
               label: 'Value Function v(x)',
               data: yValues,
               borderColor: '#0284c7',
-              borderWidth: 2.5,
+              borderWidth: 3,
               pointRadius: 0,
               fill: false,
               tension: 0.2
@@ -731,31 +739,32 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: { duration: 400 },
             plugins: {
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  label: (context) => ` v(${context.parsed.x}) = ${context.parsed.y.toFixed(2)}`
+                  label: (ctx) => ` v(${ctx.parsed.x}) = ${ctx.parsed.y.toFixed(2)}`
                 }
               }
             },
             scales: {
               x: {
-                title: { display: true, text: 'การเปลี่ยนแปลงจริง เทียบกับจุดอ้างอิง (Losses < 0 < Gains)', color: tickColor, font: { size: 11 } },
+                title: { display: true, text: 'การเปลี่ยนแปลงจริงเทียบจุดอ้างอิง (Losses < 0 < Gains)', color: tickColor, font: { size: 11, family: 'Prompt' } },
                 grid: { color: gridColor },
-                ticks: { color: tickColor, font: { size: 10 } }
+                ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } }
               },
               y: {
-                title: { display: true, text: 'คุณค่า/ความรู้สึกทางใจ v(x)', color: tickColor, font: { size: 11 } },
+                title: { display: true, text: 'คุณค่าทางใจ v(x)', color: tickColor, font: { size: 11, family: 'Prompt' } },
                 grid: { color: gridColor },
-                ticks: { color: tickColor, font: { size: 10 } }
+                ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } }
               }
             }
           }
         });
       }
 
-      // 2.2 Discounting Comparison Chart
+      // 2.2 Discount Chart
       const ctxDiscount = document.getElementById('discountChart');
       if (ctxDiscount) {
         const periods = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -764,6 +773,10 @@
         
         const expCurve = periods.map(t => Math.pow(delta, t) * 100);
         const quasiCurve = periods.map(t => t === 0 ? 100 : beta * Math.pow(delta, t) * 100);
+
+        if (discountChartInstance) {
+          discountChartInstance.destroy();
+        }
 
         discountChartInstance = new Chart(ctxDiscount, {
           type: 'line',
@@ -774,17 +787,19 @@
                 label: 'Exponential (Rational / Planner)',
                 data: expCurve,
                 borderColor: '#10b981',
-                borderWidth: 2,
-                pointRadius: 3,
+                borderWidth: 2.5,
+                pointRadius: 3.5,
+                pointBackgroundColor: '#10b981',
                 tension: 0.1
               },
               {
                 label: 'Quasi-Hyperbolic (Humans / Doer with β=0.6)',
                 data: quasiCurve,
                 borderColor: '#f43f5e',
-                borderWidth: 2,
-                borderDash: [5, 5],
-                pointRadius: 3,
+                borderWidth: 2.5,
+                borderDash: [6, 4],
+                pointRadius: 3.5,
+                pointBackgroundColor: '#f43f5e',
                 tension: 0.1
               }
             ]
@@ -792,17 +807,18 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: { duration: 400 },
             plugins: {
               legend: {
-                labels: { color: isDark ? '#cbd5e1' : '#334155', font: { size: 11 } }
+                labels: { color: isDark ? '#cbd5e1' : '#334155', font: { size: 11, family: 'Prompt' } }
               }
             },
             scales: {
-              x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
+              x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } } },
               y: { 
-                title: { display: true, text: 'มูลค่าสัมพัทธ์ในใจ (Relative Value)', color: tickColor, font: { size: 11 } },
+                title: { display: true, text: 'มูลค่าสัมพัทธ์ในใจ (Relative Value)', color: tickColor, font: { size: 11, family: 'Prompt' } },
                 grid: { color: gridColor }, 
-                ticks: { color: tickColor, font: { size: 10 } } 
+                ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } } 
               }
             }
           }
@@ -811,26 +827,11 @@
     }
 
     function updateChartsTheme(isDark) {
-      const gridColor = isDark ? '#1e293b' : '#e2e8f0';
-      const tickColor = isDark ? '#64748b' : '#94a3b8';
-      const legendColor = isDark ? '#cbd5e1' : '#334155';
-
-      [prospectChartInstance, discountChartInstance].forEach(chart => {
-        if (chart) {
-          chart.options.scales.x.grid.color = gridColor;
-          chart.options.scales.x.ticks.color = tickColor;
-          chart.options.scales.y.grid.color = gridColor;
-          chart.options.scales.y.ticks.color = tickColor;
-          if (chart.options.plugins.legend.labels) {
-            chart.options.plugins.legend.labels.color = legendColor;
-          }
-          chart.update();
-        }
-      });
+      createOrUpdateCharts();
     }
 
     // -------------------------------------------------------------
-    // 3. 100-QUESTION DATABASE (Medium to Hard)
+    // 3. 100-QUESTION DATABASE (Comprehensive Coverage)
     // -------------------------------------------------------------
     const masterQuestionPool = [
       {
@@ -1195,7 +1196,7 @@
       }
     ];
 
-    // Seed up to 100 questions
+    // Seed up to 100 analytical questions
     const advancedTopicSeeds = [
       { name: "Projection Bias", desc: "การคาดการณ์รสนิยมในอนาคตผิดพลาดเพราะนำอารมณ์หรือสภาวะหิว/อิ่มในปัจจุบันไปตัดสิน", correct: "ประเมินความต้องการบริโภคในอนาคตสูงเกินไปเมื่อไปซื้อของขณะกำลังหิวจัด", cat: "Nonstandard Beliefs" },
       { name: "Endowment Effect", desc: "การประเมินมูลค่าสิ่งของที่ตนเองครอบครองสูงกว่าราคาที่ตนเองยินดีจ่ายซื้อ", correct: "ตั้งราคาขายแก้วน้ำที่ตนถือครองสูงกว่าราคาที่ตนยอมจ่ายซื้อของชิ้นเดียวกันเกือบ 2 เท่า", cat: "Prospect Theory" },
@@ -1256,7 +1257,11 @@
         navQuizBtn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
         navQuizBtn.classList.add('text-slate-600', 'dark:text-slate-400');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Re-render Math and Charts when returning to coursebook
+        if (window.MathJax) MathJax.typesetPromise();
+        createOrUpdateCharts();
       }
+      if (window.lucide) lucide.createIcons();
     }
 
     navBookBtn.onclick = () => switchView('book');
@@ -1323,7 +1328,7 @@
 
       q.options.forEach((optText, idx) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 transition flex items-start gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200 group";
+        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 transition flex items-start gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200 group cursor-pointer";
         btn.innerHTML = `
           <span class="w-6 h-6 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover:border-indigo-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 shrink-0 mt-0.5 font-mono">
             ${String.fromCharCode(65 + idx)}
@@ -1334,7 +1339,7 @@
         optsBox.appendChild(btn);
       });
 
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function selectOption(selectedIdx, selectedBtn) {
@@ -1344,7 +1349,7 @@
 
       allBtns.forEach((btn, idx) => {
         btn.disabled = true;
-        btn.classList.remove('hover:bg-slate-100', 'dark:hover:bg-slate-800/80');
+        btn.classList.remove('hover:bg-slate-100', 'dark:hover:bg-slate-800/80', 'cursor-pointer');
         if (idx === q.ans) {
           btn.classList.add('bg-emerald-50', 'dark:bg-emerald-950/40', 'border-emerald-500', 'text-emerald-800', 'dark:text-emerald-300');
           btn.querySelector('span:first-child').classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
@@ -1387,7 +1392,7 @@
       }
       quizNextBtn.classList.remove('hidden');
 
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     quizNextBtn.onclick = () => {
@@ -1416,7 +1421,7 @@
         summaryEl.innerText = "ควรกลับไปทบทวนในแท็บ 'คลังเนื้อหา' โดยเฉพาะ Prospect Theory และ Time Preference";
       }
 
-      // Populate Review List
+      // Review List
       quizReviewContainer.innerHTML = '';
       quizHistory.forEach((item, i) => {
         const row = document.createElement('div');
@@ -1435,7 +1440,7 @@
         quizReviewContainer.appendChild(row);
       });
 
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     quizToggleReviewBtn.onclick = () => {
@@ -1445,10 +1450,12 @@
     quizRunBtn.onclick = () => initQuizSession();
     quizRetryBtn.onclick = () => initQuizSession();
 
-    // DOM Ready
+    // DOM Ready: Init Charts and Icons
     window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      initCharts();
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => {
+        createOrUpdateCharts();
+      }, 100);
     });
   </script>
 </body>
