@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="th" class="dark scroll-smooth">
+<html lang="th" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Behavioral Economics & Public Policy: Midterm Masterclass</title>
   
+  <!-- Google Fonts: Prompt & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
+      darkMode: ['selector', '[data-theme="dark"]'],
       theme: {
         extend: {
           fontFamily: {
@@ -20,17 +25,6 @@
       }
     }
   </script>
-  
-  <!-- Google Fonts: Prompt & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Chart.js (ใช้เวอร์ชัน UMD ที่เสถียรที่สุด) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <!-- MathJax CDN for LaTeX Math Rendering -->
   <script>
@@ -45,46 +39,73 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
-    body { font-family: 'Prompt', sans-serif; }
-    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subcard: #f1f5f9;
+      --border-color: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+    }
+    [data-theme="dark"] {
+      --bg-main: #020617;
+      --bg-card: #0f172a;
+      --bg-subcard: #1e293b;
+      --border-color: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Prompt', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .custom-card {
+      background-color: var(--bg-card);
+      border-color: var(--border-color);
+    }
+    .custom-subcard {
+      background-color: var(--bg-subcard);
+      border-color: var(--border-color);
+    }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #64748b44; border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
 
   <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+  <header class="sticky top-0 z-50 custom-card backdrop-blur-md border-b transition-colors">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-          <i data-lucide="brain-circuit" class="w-5 h-5"></i>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-teal-400 flex items-center justify-center text-white shadow-md">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         </div>
         <div>
-          <span class="font-bold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white">Behavioral Econ & Policy</span>
-          <span class="hidden sm:inline-block text-[11px] text-indigo-600 dark:text-indigo-400 ml-2 font-mono bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-500/20">Midterm Mastery</span>
+          <span class="font-bold text-sm sm:text-base tracking-tight">Behavioral Econ & Policy</span>
+          <span class="hidden sm:inline-block text-[11px] text-indigo-500 font-mono px-2 py-0.5 rounded border border-indigo-500/20 ml-2">Midterm Mastery</span>
         </div>
       </div>
 
-      <!-- Navigation & Theme Switcher -->
+      <!-- Controls -->
       <div class="flex items-center gap-2">
-        <nav class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <nav class="flex items-center custom-subcard p-1 rounded-2xl border">
           <button id="nav-book-btn" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5">
-            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             <span>คลังเนื้อหา</span>
           </button>
-          <button id="nav-quiz-btn" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5">
-            <i data-lucide="award" class="w-3.5 h-3.5"></i>
+          <button id="nav-quiz-btn" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
             <span>จำลองสอบ 30 ข้อ</span>
           </button>
         </nav>
 
-        <!-- Fixed Theme Toggle Button -->
-        <button id="theme-toggle" type="button" aria-label="Toggle Theme" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition shadow-sm cursor-pointer">
-          <span id="theme-icon-container">
-            <i data-lucide="sun" class="w-4 h-4"></i>
+        <!-- Pure Native Theme Toggle Button -->
+        <button id="theme-toggle-btn" type="button" class="w-9 h-9 rounded-xl custom-subcard border flex items-center justify-center transition shadow-sm cursor-pointer" title="สลับธีม">
+          <span id="theme-icon">
+            <!-- Rendered by JS -->
           </span>
         </button>
       </div>
@@ -94,60 +115,57 @@
   <!-- ================= MAIN CONTENT ================= -->
   <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 lg:p-8">
 
-    <!-- VIEW 1: DEEP-DIVE TEXTBOOK (คลังเนื้อหาฉบับสมบูรณ์) -->
-    <div id="coursebook-view" class="space-y-12">
+    <!-- VIEW 1: DEEP-DIVE TEXTBOOK (คลังเนื้อหา) -->
+    <div id="coursebook-view" class="space-y-10">
       
       <!-- HERO BANNER -->
-      <section class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 overflow-hidden shadow-xl dark:shadow-2xl transition-colors">
-        <div class="absolute -right-16 -top-16 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div class="relative z-10 max-w-3xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/30 text-teal-700 dark:text-teal-300 text-xs font-medium mb-4">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> ถอดรหัสครบทุกหัวข้อจากสรุป Midterm 17 หน้า
+      <section class="relative custom-card border rounded-3xl p-6 sm:p-10 overflow-hidden shadow-xl">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-500 text-xs font-medium mb-4">
+            ถอดรหัสครบทุกหัวข้อจากสรุป Midterm 17 หน้า
           </div>
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white mb-4">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-4">
             เศรษฐศาสตร์พฤติกรรม <br class="hidden sm:inline" />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-teal-500 dark:from-indigo-400 dark:via-sky-400 dark:to-teal-300">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-sky-500 to-teal-400">
               & การออกแบบนโยบายสาธารณะ
             </span>
           </h1>
-          <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-light mb-6">
-            ทำความเข้าใจความบกพร่องเชิงโครงสร้างของสมองมนุษย์ (Systematic Biases), แบบจำลอง Prospect Theory, 3 เสาหลักความลำเอียงของ DellaVigna, สถาปัตยกรรมทางเลือก Nudge, MINDSPACE, EAST Framework ไปจนถึงแบบจำลองการบริโภคข้ามเวลา Quasi-Hyperbolic Discounting ($\beta$-$\delta$) พร้อมกราฟจำลอง Interactive ที่ทำงานได้อย่างเสถียร
+          <p class="text-sm sm:text-base leading-relaxed font-light mb-6 opacity-80">
+            วิเคราะห์ความบกพร่องเชิงโครงสร้างของมนุษย์ (Systematic Biases), แบบจำลอง Prospect Theory, 3 เสาหลัก DellaVigna, สถาปัตยกรรมทางเลือก Nudge, MINDSPACE, EAST Framework และแบบจำลองการบริโภคข้ามเวลา Quasi-Hyperbolic Discounting ($\beta$-$\delta$) พร้อมกราฟ Native Engine แบบ Interactive
           </p>
           <div class="flex flex-wrap gap-2.5">
-            <a href="#sec-ch1" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 transition flex items-center gap-1.5">
-              <i data-lucide="hash" class="w-3.5 h-3.5 text-indigo-500"></i> บทที่ 1: รากฐานพฤติกรรม & Prospect Theory
+            <a href="#sec-ch1" class="px-3 py-1.5 rounded-xl custom-subcard border text-xs font-medium transition hover:border-indigo-500">
+              บทที่ 1: รากฐานพฤติกรรม & Prospect Theory
             </a>
-            <a href="#sec-ch2" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 transition flex items-center gap-1.5">
-              <i data-lucide="hash" class="w-3.5 h-3.5 text-teal-500"></i> บทที่ 2: Choice Architecture, MINDSPACE & Nudge
+            <a href="#sec-ch2" class="px-3 py-1.5 rounded-xl custom-subcard border text-xs font-medium transition hover:border-teal-500">
+              บทที่ 2: Choice Architecture & MINDSPACE
             </a>
-            <a href="#sec-ch3" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 transition flex items-center gap-1.5">
-              <i data-lucide="hash" class="w-3.5 h-3.5 text-amber-500"></i> บทที่ 3: แบบจำลอง $\beta$-$\delta$, RCT & Policy Insight
+            <a href="#sec-ch3" class="px-3 py-1.5 rounded-xl custom-subcard border text-xs font-medium transition hover:border-amber-500">
+              บทที่ 3: แบบจำลอง $\beta$-$\delta$, RCT & Policy Insight
             </a>
           </div>
         </div>
       </section>
 
       <!-- CHAPTER 1 -->
-      <section id="sec-ch1" class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm dark:shadow-none transition-colors">
-        <div class="border-b border-slate-200 dark:border-slate-800 pb-5 flex items-center justify-between">
+      <section id="sec-ch1" class="custom-card border rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm">
+        <div class="border-b border-slate-700/20 pb-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold">01</span>
+            <span class="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-500 font-bold font-mono">01</span>
             <div>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">บทที่ 1: รากฐานเศรษฐศาสตร์พฤติกรรม (Behavioral Foundations)</h2>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Homo Economicus vs. Humans, Prospect Theory, DellaVigna Framework & Heuristics</p>
+              <h2 class="text-xl sm:text-2xl font-bold">บทที่ 1: รากฐานเศรษฐศาสตร์พฤติกรรม (Behavioral Foundations)</h2>
+              <p class="text-xs opacity-70">Homo Economicus vs. Humans, Prospect Theory, DellaVigna Framework & Heuristics</p>
             </div>
           </div>
         </div>
 
-        <!-- Section 1.1: Econs vs Humans -->
+        <!-- Econs vs Humans -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
-            <h3 class="text-base font-semibold text-indigo-600 dark:text-indigo-300 flex items-center gap-2">
-              <i data-lucide="user-check" class="w-4 h-4"></i> Homo Economicus (Econs / เศรษฐศาสตร์ดั้งเดิม)
+          <div class="custom-subcard border rounded-2xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-indigo-500 flex items-center gap-2">
+              Homo Economicus (Econs / เศรษฐศาสตร์ดั้งเดิม)
             </h3>
-            <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2 font-light list-disc list-inside">
+            <ul class="text-xs sm:text-sm space-y-2 font-light list-disc list-inside opacity-90">
               <li><strong>Perfect Rationality:</strong> มีเหตุผล 100% ประมวลผลข้อมูลที่มีทั้งหมดได้อย่างแม่นยำ ไร้อคติ</li>
               <li><strong>Expected Utility Maximizer:</strong> ตัดสินใจเพื่อ $\max \sum p(s) U(x|s)$ ภายใต้ทรัพยากรจำกัดเสมอ</li>
               <li><strong>Time Consistency:</strong> แผนที่วางไว้สำหรับอนาคต จะถูกปฏิบัติตามอย่างเคร่งครัดเมื่อเวลานั้นมาถึง[cite: 1]</li>
@@ -156,11 +174,11 @@
             </ul>
           </div>
 
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
-            <h3 class="text-base font-semibold text-rose-600 dark:text-rose-300 flex items-center gap-2">
-              <i data-lucide="user-x" class="w-4 h-4"></i> Homo Sapiens (Humans / มนุษย์จริง)
+          <div class="custom-subcard border rounded-2xl p-5 space-y-3">
+            <h3 class="text-base font-semibold text-rose-500 flex items-center gap-2">
+              Homo Sapiens (Humans / มนุษย์จริง)
             </h3>
-            <ul class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-2 font-light list-disc list-inside">
+            <ul class="text-xs sm:text-sm space-y-2 font-light list-disc list-inside opacity-90">
               <li><strong>Bounded Rationality:</strong> พลังสมองมีจำกัด จึงต้องพึ่งพาทางลัดทางความคิด (Heuristics) ในการตัดสินใจ[cite: 1]</li>
               <li><strong>Systematically Biased:</strong> มีความผิดพลาดและอคติที่เป็นระบบและคาดเดาแบบแผนได้[cite: 1]</li>
               <li><strong>Time Inconsistent (Present Bias):</strong> วางแผนอย่างดี แต่เมื่อถึงเวลาจริงกลับแพ้ต่อสิ่งเร้าเฉพาะหน้า[cite: 1]</li>
@@ -170,41 +188,32 @@
           </div>
         </div>
 
-        <!-- Section 1.2: 3 Ways of DellaVigna (2009) -->
-        <div class="bg-indigo-50/50 dark:bg-slate-950/80 border border-indigo-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-          <div class="border-b border-indigo-100 dark:border-slate-800 pb-3">
-            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <i data-lucide="git-fork" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i> กรอบการเบี่ยงเบน 3 ด้าน จากแบบจำลองมาตรฐาน (DellaVigna, 2009)
-            </h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">DellaVigna ได้จำแนกความล้มเหลวของการตัดสินใจของมนุษย์ออกจาก Standard Model เป็น 3 เสาหลัก[cite: 1]:</p>
-          </div>
-
+        <!-- 3 Ways DellaVigna -->
+        <div class="custom-subcard border rounded-2xl p-5 sm:p-6 space-y-4">
+          <h3 class="text-base sm:text-lg font-bold flex items-center gap-2">
+            กรอบการเบี่ยงเบน 3 ด้าน จากแบบจำลองมาตรฐาน (DellaVigna, 2009)
+          </h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
-            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
-              <strong class="text-indigo-600 dark:text-indigo-400 font-bold block text-sm">1. Nonstandard Preferences</strong>
-              <p class="text-slate-500 dark:text-slate-400 text-xs">ความชอบไม่เป็นไปตามมาตรฐาน:</p>
-              <ul class="text-slate-600 dark:text-slate-300 font-light space-y-1.5 list-disc list-inside text-xs">
+            <div class="p-4 rounded-xl custom-card border space-y-2">
+              <strong class="text-indigo-500 font-bold block text-sm">1. Nonstandard Preferences</strong>
+              <ul class="font-light space-y-1.5 list-disc list-inside text-xs opacity-90">
                 <li><strong>Time Preference:</strong> มี Present Bias ขาดการควบคุมตนเอง (Self-Control)[cite: 1]</li>
                 <li><strong>Risk Preference:</strong> กลัวการสูญเสียมากกว่าความสุขตามเป้าหมาย (Loss Aversion)[cite: 1]</li>
                 <li><strong>Social Preference:</strong> คำนึงถึง Fairness, ความเหลื่อมล้ำ และความเอื้อเฟื้อเผื่อแผ่[cite: 1]</li>
               </ul>
             </div>
-
-            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
-              <strong class="text-teal-600 dark:text-teal-400 font-bold block text-sm">2. Nonstandard Beliefs</strong>
-              <p class="text-slate-500 dark:text-slate-400 text-xs">ความเชื่อไม่เป็นไปตามมาตรฐาน:</p>
-              <ul class="text-slate-600 dark:text-slate-300 font-light space-y-1.5 list-disc list-inside text-xs">
+            <div class="p-4 rounded-xl custom-card border space-y-2">
+              <strong class="text-teal-500 font-bold block text-sm">2. Nonstandard Beliefs</strong>
+              <ul class="font-light space-y-1.5 list-disc list-inside text-xs opacity-90">
                 <li><strong>Overconfidence:</strong> มั่นใจในข้อมูลหรือประเมินโอกาสสำเร็จสูงเกินจริง[cite: 1]</li>
                 <li><strong>Confirmation Bias:</strong> เลือกเชื่อเฉพาะข้อมูลที่สอดคล้องกับกรอบคิดเดิมของตน[cite: 1]</li>
                 <li><strong>Projection Bias:</strong> เอาอารมณ์ปัจจุบันไปทำนายความต้องการในอนาคตผิดพลาด[cite: 1]</li>
                 <li><strong>Law of Small Numbers:</strong> สรุปแนวโน้มจากข้อมูลตัวอย่างขนาดเล็ก (Gambler's Fallacy)[cite: 1]</li>
               </ul>
             </div>
-
-            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
-              <strong class="text-amber-600 dark:text-amber-400 font-bold block text-sm">3. Nonstandard Decision Making</strong>
-              <p class="text-slate-500 dark:text-slate-400 text-xs">การตัดสินใจไม่เป็นไปตามมาตรฐาน:</p>
-              <ul class="text-slate-600 dark:text-slate-300 font-light space-y-1.5 list-disc list-inside text-xs">
+            <div class="p-4 rounded-xl custom-card border space-y-2">
+              <strong class="text-amber-500 font-bold block text-sm">3. Nonstandard Decision Making</strong>
+              <ul class="font-light space-y-1.5 list-disc list-inside text-xs opacity-90">
                 <li><strong>Framing Effect:</strong> การตัดสินใจเปลี่ยนไปตามการนำเสนอข้อมูล[cite: 1]</li>
                 <li><strong>Limited Attention:</strong> ไม่สนใจข้อมูลที่ไม่โดดเด่นสะดุดตา[cite: 1]</li>
                 <li><strong>Heuristics:</strong> ใช้ทางลัดแก้ปัญหาซับซ้อนจนเกิด Conjunction Fallacy[cite: 1]</li>
@@ -214,318 +223,265 @@
           </div>
         </div>
 
-        <!-- Section 1.3: Prospect Theory Chart Container (Fixed Height) -->
-        <div class="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
+        <!-- NATIVE CANVAS: Prospect Theory -->
+        <div class="custom-subcard border rounded-2xl p-5 sm:p-6 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <i data-lucide="trending-down" class="w-5 h-5 text-amber-500"></i> ทฤษฎีความคาดหวัง (Prospect Theory) & กราฟคุณค่า (Value Function)
+              <h3 class="text-base sm:text-lg font-bold flex items-center gap-2">
+                ทฤษฎีความคาดหวัง (Prospect Theory) & กราฟคุณค่า (Value Function)
               </h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Kahneman & Tversky (1979) ค้นพบว่ามนุษย์ตัดสินใจจาก "การเปลี่ยนแปลงเทียบกับจุดอ้างอิง" ไม่ใช่วัดจากระดับความมั่งคั่งสุทธิ[cite: 1]</p>
+              <p class="text-xs opacity-70 mt-0.5">Kahneman & Tversky (1979) ค้นพบว่ามนุษย์ตัดสินใจจาก "การเปลี่ยนแปลงเทียบกับจุดอ้างอิง" ไม่ใช่วัดจากระดับความมั่งคั่งสุทธิ[cite: 1]</p>
             </div>
-            <span class="text-xs font-mono bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300 border border-amber-200 dark:border-amber-500/20 px-3 py-1 rounded-full self-start sm:self-auto">
+            <span class="text-xs font-mono bg-amber-500/10 text-amber-500 border border-amber-500/30 px-3 py-1 rounded-full self-start sm:self-auto">
               Loss Aversion $\lambda \approx 2.25$
             </span>
           </div>
 
-          <!-- Chart Area -->
-          <div class="w-full bg-white dark:bg-slate-900/90 rounded-xl p-4 border border-slate-200 dark:border-slate-800 relative" style="height: 320px;">
-            <canvas id="prospectChart"></canvas>
+          <!-- NATIVE CANVAS 1 -->
+          <div class="w-full custom-card rounded-xl p-3 border relative overflow-hidden flex flex-col items-center">
+            <canvas id="nativeProspectCanvas" width="700" height="300" class="w-full max-w-full h-auto"></canvas>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600 dark:text-slate-300 pt-2 font-light">
-            <div class="bg-white dark:bg-slate-900/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <strong class="text-amber-600 dark:text-amber-300 block font-medium mb-1">1. Reference Dependence</strong>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-2 font-light opacity-90">
+            <div class="custom-card p-3.5 rounded-xl border">
+              <strong class="text-amber-500 block font-medium mb-1">1. Reference Dependence</strong>
               อรรถประโยชน์ไม่ได้วัดจากความมั่งคั่งสุทธิ แต่วัดจากความต่างเทียบจุดอ้างอิง (Reference Point: 0)[cite: 1] การได้เงิน 1,000 แล้วโดนยึด 500 ทำให้เจ็บปวดมากกว่าการได้ 500 ตรงๆ ทั้งที่ผลลัพธ์สุทธิเท่ากัน[cite: 1]
             </div>
-            <div class="bg-white dark:bg-slate-900/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <strong class="text-teal-600 dark:text-teal-300 block font-medium mb-1">2. Diminishing Sensitivity</strong>
+            <div class="custom-card p-3.5 rounded-xl border">
+              <strong class="text-teal-500 block font-medium mb-1">2. Diminishing Sensitivity</strong>
               ฝั่งกำไรกราฟเป็นเส้นเว้า (Concave) มนุษย์จะ **กลัวความเสี่ยง (Risk Averse)**[cite: 1] ส่วนฝั่งขาดทุนเป็นเส้นนูน (Convex) มนุษย์จะ **ยอมเสี่ยง (Risk Seeking)** เพื่อเลี่ยงการเสียที่แน่นอน[cite: 1]
             </div>
-            <div class="bg-white dark:bg-slate-900/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-              <strong class="text-rose-600 dark:text-rose-300 block font-medium mb-1">3. Loss Aversion</strong>
+            <div class="custom-card p-3.5 rounded-xl border">
+              <strong class="text-rose-500 block font-medium mb-1">3. Loss Aversion</strong>
               กราฟฝั่งขาดทุนชันกว่าฝั่งกำไรราว 2–2.5 เท่า มนุษย์เกลียดการสูญเสียมากกว่าความสุขที่ได้ในเงินเท่ากัน (เช่น โยนเหรียญได้ 600 เสีย 500 มี $EV = +50$ แต่คนจริงส่วนใหญ่ปฏิเสธที่จะเล่น)[cite: 1]
             </div>
           </div>
         </div>
 
-        <!-- Section 1.4: Framing & Trolley Problem Deep-Dive -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3 text-xs sm:text-sm">
-            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <i data-lucide="split" class="w-4 h-4 text-sky-500"></i> ผลของกรอบความคิด (Framing Effect & Reflection)
+        <!-- Framing & Trolley Problem -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
+          <div class="custom-subcard border rounded-2xl p-5 space-y-3">
+            <h4 class="font-bold flex items-center gap-2 text-sky-500">
+              ผลของกรอบความคิด (Framing Effect & Reflection)
             </h4>
-            <p class="text-slate-600 dark:text-slate-300 font-light">
-              กรณีศึกษาโครงการระบาดวิทยาคุกคามชีวิตคน 600 คน[cite: 1]:
-            </p>
-            <div class="space-y-2">
-              <div class="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40">
-                <span class="text-emerald-700 dark:text-emerald-400 font-medium">Gain Frame (ช่วยชีวิต):</span> มาตรการ ก: ช่วย 200 คนแน่นอน vs มาตรการ ข: โอกาส 1/3 ช่วย 600 คน, 2/3 ช่วยใครไม่ได้เลย $\rightarrow$ <strong>คนเลือก ก แน่นอน (Risk Averse)</strong>[cite: 1]
+            <p class="font-light opacity-90">กรณีศึกษาโครงการระบาดวิทยาคุกคามชีวิตคน 600 คน[cite: 1]:</p>
+            <div class="space-y-2 font-light">
+              <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                <span class="text-emerald-500 font-medium">Gain Frame (ช่วยชีวิต):</span> ช่วย 200 คนแน่นอน vs โอกาส 1/3 ช่วย 600 คน $\rightarrow$ <strong>คนเลือกช่วย 200 คนแน่นอน (Risk Averse)</strong>[cite: 1]
               </div>
-              <div class="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/40">
-                <span class="text-rose-700 dark:text-rose-400 font-medium">Loss Frame (เสียชีวิต):</span> มาตรการ ก: ตาย 400 คนแน่นอน vs มาตรการ ข: โอกาส 1/3 ไม่มีใครตาย, 2/3 ตายทั้งหมด $\rightarrow$ <strong>คนเลือก ข ยอมเสี่ยงทันที (Risk Seeking)</strong>[cite: 1]
+              <div class="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30">
+                <span class="text-rose-500 font-medium">Loss Frame (เสียชีวิต):</span> ตาย 400 คนแน่นอน vs โอกาส 1/3 ไม่มีใครตาย $\rightarrow$ <strong>คนเลือกยอมเสี่ยงทันที (Risk Seeking)</strong>[cite: 1]
               </div>
             </div>
           </div>
 
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3 text-xs sm:text-sm">
-            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <i data-lucide="git-commit" class="w-4 h-4 text-violet-500"></i> Trolley Problem: ปรัชญาปะทะประสาทวิทยา
+          <div class="custom-subcard border rounded-2xl p-5 space-y-3">
+            <h4 class="font-bold flex items-center gap-2 text-violet-500">
+              Trolley Problem: ปรัชญาปะทะประสาทวิทยา
             </h4>
-            <p class="text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+            <p class="font-light opacity-90 leading-relaxed">
               <strong>กรณีสับคันเลื่อน (Lever):</strong> คนยอมสับคันเลื่อนฆ่า 1 คนเพื่อช่วย 5 คน เพราะมองตาม <em>ปรัชญาประโยชน์นิยม (Utilitarianism)</em> มุ่งเน้นผลลัพธ์สุทธิ ($5 - 1 = +4$ ชีวิต)[cite: 1]<br/><br/>
               <strong>กรณีคนอ้วนบนสะพาน (The Fat Man):</strong> แม้ผลลัพธ์ตัวเลขจะคือ 1 แลก 5 เท่าเดิม แต่คนส่วนใหญ่ปฏิเสธที่จะผลักคนอ้วนลงไป เพราะสมองมนุษย์ประมวลผล <em>การทำร้ายทางตรงด้วยตนเอง (Direct Physical Harm)</em> แตกต่างจากการกดคันเลื่อนทางอ้อม ซึ่งขัดต่อ <em>ปรัชญาหน้าที่นิยม (Deontology / Kantian Ethics)</em> อย่างรุนแรง[cite: 1]
             </p>
           </div>
         </div>
-
       </section>
 
       <!-- CHAPTER 2 -->
-      <section id="sec-ch2" class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm dark:shadow-none transition-colors">
-        <div class="border-b border-slate-200 dark:border-slate-800 pb-5 flex items-center justify-between">
+      <section id="sec-ch2" class="custom-card border rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm">
+        <div class="border-b border-slate-700/20 pb-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="w-10 h-10 rounded-2xl bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/30 flex items-center justify-center text-teal-600 dark:text-teal-400 font-bold">02</span>
+            <span class="w-10 h-10 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-500 font-bold font-mono">02</span>
             <div>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">บทที่ 2: นโยบายสาธารณะเชิงพฤติกรรม & การสะกิด (Behavioral Public Policy & Nudge)</h2>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Choice Architecture, BASIC Toolkit, ABCD Model, MINDSPACE & Optimal Paternalism</p>
+              <h2 class="text-xl sm:text-2xl font-bold">บทที่ 2: นโยบายสาธารณะเชิงพฤติกรรม & การสะกิด (Behavioral Public Policy & Nudge)</h2>
+              <p class="text-xs opacity-70">Choice Architecture, BASIC Toolkit, ABCD Model, MINDSPACE & Optimal Paternalism</p>
             </div>
           </div>
         </div>
 
         <!-- 4 Types of Interventions -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm">
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-1.5">
-            <div class="text-rose-600 dark:text-rose-400 font-bold text-xs uppercase tracking-wider">1. Restricting Choice</div>
-            <div class="text-slate-900 dark:text-white font-semibold">ตัดทางเลือกออกจากระบบ</div>
-            <p class="text-slate-500 dark:text-slate-400 font-light text-xs">การออกกฎหมายแบนสินค้า แบนบุหรี่ไฟฟ้าเด็ดขาด หรือห้ามขายน้ำอัดลมในโรงเรียน[cite: 1]</p>
+          <div class="custom-subcard border p-4 rounded-2xl space-y-1.5">
+            <div class="text-rose-500 font-bold text-xs uppercase tracking-wider">1. Restricting Choice</div>
+            <div class="font-semibold">ตัดทางเลือกออกจากระบบ</div>
+            <p class="opacity-70 font-light text-xs">การออกกฎหมายแบนสินค้า แบนบุหรี่ไฟฟ้าเด็ดขาด หรือห้ามขายน้ำอัดลมในโรงเรียน[cite: 1]</p>
           </div>
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-1.5">
-            <div class="text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider">2. Changing Choice</div>
-            <div class="text-slate-900 dark:text-white font-semibold">ใช้กลไกราคา / อุดหนุน</div>
-            <p class="text-slate-500 dark:text-slate-400 font-light text-xs">การเก็บภาษีบาป (Sin Tax) ภาษีความหวาน หรือการให้เงินอุดหนุนสินค้าสุขภาพ[cite: 1]</p>
+          <div class="custom-subcard border p-4 rounded-2xl space-y-1.5">
+            <div class="text-amber-500 font-bold text-xs uppercase tracking-wider">2. Changing Choice</div>
+            <div class="font-semibold">ใช้กลไกราคา / อุดหนุน</div>
+            <p class="opacity-70 font-light text-xs">การเก็บภาษีบาป (Sin Tax) ภาษีความหวาน หรือการให้เงินอุดหนุนสินค้าสุขภาพ[cite: 1]</p>
           </div>
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-1.5">
-            <div class="text-sky-600 dark:text-sky-400 font-bold text-xs uppercase tracking-wider">3. Adding Choice</div>
-            <div class="text-slate-900 dark:text-white font-semibold">สร้างและบังคับใช้สิ่งใหม่</div>
-            <p class="text-slate-500 dark:text-slate-400 font-light text-xs">การเพิ่มช่องทางการตรวจสุขภาพ หรือการกำหนดทางเลือกบังคับใหม่ในระบบ[cite: 1]</p>
+          <div class="custom-subcard border p-4 rounded-2xl space-y-1.5">
+            <div class="text-sky-500 font-bold text-xs uppercase tracking-wider">3. Adding Choice</div>
+            <div class="font-semibold">สร้างและบังคับใช้สิ่งใหม่</div>
+            <p class="opacity-70 font-light text-xs">การเพิ่มช่องทางการตรวจสุขภาพ หรือการกำหนดทางเลือกบังคับใหม่ในระบบ[cite: 1]</p>
           </div>
-          <div class="bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/40 p-4 rounded-2xl space-y-1.5">
-            <div class="text-teal-700 dark:text-teal-300 font-bold text-xs uppercase tracking-wider">4. Nudges Choice</div>
-            <div class="text-slate-900 dark:text-white font-semibold">ปรับบริบท ไม่ตัดทางเลือก</div>
-            <p class="text-slate-600 dark:text-slate-300 font-light text-xs">ปรับสภาพแวดล้อมโดยไม่ตัดสิทธิ์ ไม่เพิ่มต้นทุนการเงินหรือเวลาอย่างมีนัยสำคัญ[cite: 1]</p>
-          </div>
-        </div>
-
-        <!-- BASIC Toolkit & ABCD Model Deep-Dive -->
-        <div class="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="wrench" class="w-5 h-5 text-teal-600 dark:text-teal-400"></i> กรอบการออกแบบนโยบาย: BASIC Toolkit & ABCD Model
-          </h3>
-          <p class="text-xs text-slate-600 dark:text-slate-300 font-light">
-            การเปลี่ยนผ่านสู่นโยบายที่อิงหลักฐานเชิงประจักษ์ (Evidence-based Policy) เพื่อป้องกันไม่ให้ผู้กำหนดนโยบายใช้อคติส่วนตัวตัดสินแทนประชาชน[cite: 1]:
-          </p>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-              <span class="font-bold text-teal-700 dark:text-teal-300 text-sm block border-b border-slate-100 dark:border-slate-800 pb-1">กระบวนการ 5 ขั้นตอนของ BASIC:</span>
-              <ul class="space-y-1.5 text-slate-600 dark:text-slate-300 font-light">
-                <li><strong class="text-slate-900 dark:text-white font-mono">B - Behavior:</strong> ระบุพฤติกรรมเป้าหมายที่วัดผลได้ชัดเจน เช่น พฤติกรรมทิ้งขยะไม่ลงถัง[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">A - Analysis:</strong> วิเคราะห์อุปสรรคและอคติทางจิตวิทยาที่ขัดขวางการตัดสินใจ[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">S - Strategies:</strong> เลือกกลยุทธ์พฤติกรรมที่เหมาะสม เช่น การปรับถังขยะให้เป็นแป้นบาสเกตบอล[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">I - Intervention:</strong> ทดสอบนโยบายผ่านการทดลอง เช่น ใช้แบบจำลอง RCT[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">C - Change:</strong> ประเมินผลลัพธ์และขยายผลไปสู่การใช้งานจริงในระดับเมืองหรือประเทศ[cite: 1]</li>
-              </ul>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-              <span class="font-bold text-indigo-700 dark:text-indigo-300 text-sm block border-b border-slate-100 dark:border-slate-800 pb-1">เครื่องมือวิเคราะห์ ABCD Model:</span>
-              <ul class="space-y-1.5 text-slate-600 dark:text-slate-300 font-light">
-                <li><strong class="text-slate-900 dark:text-white font-mono">A - Attention:</strong> ปัญหาการหลงลืม ขาดความใส่ใจ หรือข้อมูลไม่สะดุดตา[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">B - Belief Formation:</strong> ปัญหาอคติความเชื่อ เช่น Overconfidence หรือ Gambler's Fallacy[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">C - Choice:</strong> การติดกับดักกรอบความคิด (Framing) หรือยึดติดสิ่งเดิม (Status Quo)[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white font-mono">D - Determination:</strong> ปัญหาการขาดความมุ่งมั่น ผลัดวันประกันพรุ่ง หรือขาดวินัย[cite: 1]</li>
-              </ul>
-            </div>
+          <div class="bg-teal-500/10 border border-teal-500/40 p-4 rounded-2xl space-y-1.5">
+            <div class="text-teal-500 font-bold text-xs uppercase tracking-wider">4. Nudges Choice</div>
+            <div class="font-semibold">ปรับบริบท ไม่ตัดทางเลือก</div>
+            <p class="opacity-80 font-light text-xs">ปรับสภาพแวดล้อมโดยไม่ตัดสิทธิ์ ไม่เพิ่มต้นทุนการเงินหรือเวลาอย่างมีนัยสำคัญ[cite: 1]</p>
           </div>
         </div>
 
-        <!-- MINDSPACE & EAST Comprehensive Table -->
-        <div class="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="compass" class="w-5 h-5 text-teal-600 dark:text-teal-400"></i> ถอดรหัสตัวแปรสะกิดพฤติกรรม: MINDSPACE & EAST
+        <!-- MINDSPACE & EAST Framework -->
+        <div class="custom-subcard border rounded-2xl p-5 sm:p-6 space-y-4">
+          <h3 class="text-base sm:text-lg font-bold flex items-center gap-2">
+            ถอดรหัสตัวแปรสะกิดพฤติกรรม: MINDSPACE & EAST
           </h3>
-          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl space-y-2">
-              <span class="text-sm font-semibold text-teal-700 dark:text-teal-300 block border-b border-slate-100 dark:border-slate-800 pb-1.5">MINDSPACE Matrix (9 ตัวแปรหลัก)</span>
-              <ul class="space-y-1.5 text-slate-600 dark:text-slate-300 font-light">
-                <li><strong class="text-slate-900 dark:text-white">M - Messenger:</strong> ผู้ส่งสารมีผลต่อความน่าเชื่อถือ เช่น ผู้เชี่ยวชาญ vs เพื่อนสนิท[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">I - Incentives:</strong> ตอบสนองสิ่งจูงใจ แต่จุดอ้างอิงมีผลต่อความรู้สึก (Loss > Gain)[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">N - Norms:</strong> พลังเสียงข้างมาก "9 ใน 10 คนในเขตนี้จ่ายภาษีแล้ว"[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">D - Defaults:</strong> ค่าเริ่มต้นทรงอิทธิพลที่สุดเพราะคนติด Status Quo Bias[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">S - Salience:</strong> ความเด่นชัดทางสายตา ภาพ กลิ่น หรือเทปสะท้อนแสงบนถนน[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">P - Priming:</strong> การกระตุ้นความทรงจำล่วงหน้าเพื่อชี้นำการตัดสินใจ[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">A - Affect:</strong> ใช้อารมณ์ความรู้สึกเพื่อนำพาพฤติกรรมใน System 1[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">C - Commitments:</strong> การผูกมัดตนเองเพื่อแก้ปัญหาขาดวินัยและการผัดวัน[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">E - Ego:</strong> การกระทำที่ช่วยส่งเสริมภาพลักษณ์หรือความภาคภูมิใจในตนเอง[cite: 1]</li>
+            <div class="custom-card border p-4 rounded-xl space-y-2">
+              <span class="text-sm font-semibold text-teal-500 block border-b border-slate-700/20 pb-1.5">MINDSPACE Matrix (9 ตัวแปรหลัก)</span>
+              <ul class="space-y-1.5 font-light opacity-90">
+                <li><strong>M - Messenger:</strong> ผู้ส่งสารมีผลต่อความน่าเชื่อถือ เช่น ผู้เชี่ยวชาญ vs เพื่อนสนิท[cite: 1]</li>
+                <li><strong>I - Incentives:</strong> ตอบสนองสิ่งจูงใจ แต่จุดอ้างอิงมีผลต่อความรู้สึก (Loss > Gain)[cite: 1]</li>
+                <li><strong>N - Norms:</strong> พลังเสียงข้างมาก "9 ใน 10 คนในเขตนี้จ่ายภาษีแล้ว"[cite: 1]</li>
+                <li><strong>D - Defaults:</strong> ค่าเริ่มต้นทรงอิทธิพลที่สุดเพราะคนติด Status Quo Bias[cite: 1]</li>
+                <li><strong>S - Salience:</strong> ความเด่นชัดทางสายตา ภาพ กลิ่น หรือเทปสะท้อนแสงบนถนน[cite: 1]</li>
+                <li><strong>P - Priming:</strong> การกระตุ้นความทรงจำล่วงหน้าเพื่อชี้นำการตัดสินใจ[cite: 1]</li>
+                <li><strong>A - Affect:</strong> ใช้อารมณ์ความรู้สึกเพื่อนำพาพฤติกรรมใน System 1[cite: 1]</li>
+                <li><strong>C - Commitments:</strong> การผูกมัดตนเองเพื่อแก้ปัญหาขาดวินัยและการผัดวัน[cite: 1]</li>
+                <li><strong>E - Ego:</strong> การกระทำที่ช่วยส่งเสริมภาพลักษณ์หรือความภาคภูมิใจในตนเอง[cite: 1]</li>
               </ul>
             </div>
-
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl space-y-3">
-              <span class="text-sm font-semibold text-indigo-700 dark:text-indigo-300 block border-b border-slate-100 dark:border-slate-800 pb-1.5">EAST Framework (หลัก 4 ประการ)</span>
-              <ul class="space-y-2 text-slate-600 dark:text-slate-300 font-light">
-                <li><strong class="text-slate-900 dark:text-white">E - Easy (ทำได้ง่าย):</strong> ลด Friction ลดขั้นตอนเอกสาร ใช้ค่าเริ่มต้นอัตโนมัติ[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">A - Attractive (ดึงดูดใจ):</strong> ใช้ภาพ สีสัน รางวัล หรือชื่อที่กระตุ้นความสนใจ[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">S - Social (สังคมทำกัน):</strong> ชี้ให้เห็นว่าคนส่วนใหญ่ในสังคมมีพฤติกรรมนี้ร่วมกัน[cite: 1]</li>
-                <li><strong class="text-slate-900 dark:text-white">T - Timely (ทันท่วงที):</strong> สะกิดเตือนในจังหวะเวลาที่มีการตัดสินใจกระทำพอดี[cite: 1]</li>
+            <div class="custom-card border p-4 rounded-xl space-y-3">
+              <span class="text-sm font-semibold text-indigo-500 block border-b border-slate-700/20 pb-1.5">EAST Framework (หลัก 4 ประการ)</span>
+              <ul class="space-y-2 font-light opacity-90">
+                <li><strong>E - Easy:</strong> ลด Friction ลดขั้นตอนเอกสาร ใช้ค่าเริ่มต้นอัตโนมัติ[cite: 1]</li>
+                <li><strong>A - Attractive:</strong> ใช้ภาพ สีสัน รางวัล หรือชื่อที่กระตุ้นความสนใจ[cite: 1]</li>
+                <li><strong>S - Social:</strong> ชี้ให้เห็นว่าคนส่วนใหญ่ในสังคมมีพฤติกรรมนี้ร่วมกัน[cite: 1]</li>
+                <li><strong>T - Timely:</strong> สะกิดเตือนในจังหวะเวลาที่มีการตัดสินใจกระทำพอดี[cite: 1]</li>
               </ul>
-              <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-lg border border-indigo-200 dark:border-indigo-800/40 text-[11px] text-indigo-800 dark:text-indigo-200">
+              <div class="p-3 bg-indigo-500/10 rounded-lg border border-indigo-500/20 text-[11px]">
                 <strong>Unit Bias & Health Halo:</strong> มนุษย์มีอคติมองว่า 1 หน่วยที่จัดไว้คือปริมาณที่เหมาะสม การหั่นชิ้นอาหารหรือลดขนาดจานจึงช่วยคุมปริมาณอาหารได้อย่างเป็นธรรมชาติ ส่วน Health Halo คือการที่ข้อความ "Whole Grain" ทำให้คนเผลอคิดว่าอาหารนั้นมีประโยชน์ทั้งหมด ทั้งที่มีน้ำตาลสูงมาก[cite: 1]
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Classic Cases: Organ Donation, 401(k), Blind Box & E-Cigarette -->
+        <!-- Cases -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-3">
-            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i> การบริจาคอวัยวะ & กองทุนสำรองเลี้ยงชีพ 401(k)
+          <div class="custom-subcard border p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold flex items-center gap-2 text-rose-500">
+              การบริจาคอวัยวะ & กองทุนสำรองเลี้ยงชีพ 401(k)
             </h4>
-            <p class="text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+            <p class="font-light opacity-90 leading-relaxed">
               <strong>Organ Donation:</strong> กฎหมายแบบ Opt-in ประชาชนต้องลงทะเบียนเอง อัตราบริจาคจึงต่ำเพียง 10-15% แต่เมื่อเปลี่ยนเป็น <strong>Opt-out Default</strong> (เป็นผู้บริจาคอัตโนมัติ หากไม่ต้องการค่อยทำเรื่องยกเลิก) อัตราความยินยอมพุ่งสูงเกือบ 100% ทันที เพราะความเฉื่อยชาทำงานในเชิงบวก[cite: 1]<br/><br/>
               <strong>401(k) Auto-enrollment (Madrian & Shea, 2001):</strong> การหักเงินออมอัตโนมัติช่วยแก้ปัญหา <em>Choice Overload</em> (ความล้าจากการเลือกลงทุนหลายกองทุน) และ <em>Endorsement Effect</em> (มองว่าค่าเริ่มต้นคือคำแนะนำที่ดีที่สุดแล้ว)[cite: 1]
             </p>
           </div>
 
-          <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-3">
-            <h4 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <i data-lucide="package" class="w-4 h-4 text-amber-500"></i> กล่องสุ่มสินค้า (Blind Box) & การป้องกันบุหรี่ไฟฟ้า
+          <div class="custom-subcard border p-5 rounded-2xl space-y-3">
+            <h4 class="font-bold flex items-center gap-2 text-amber-500">
+              กล่องสุ่มสินค้า (Blind Box) & การป้องกันบุหรี่ไฟฟ้า
             </h4>
-            <p class="text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+            <p class="font-light opacity-90 leading-relaxed">
               <strong>Blind Box:</strong> ใช้ <em>Variable Rewards</em> (สุ่มตัวธรรมดา 1/12 ตัว Secret 1/144) กระตุ้นโดปามีน และสร้าง <em>Commitment</em> ในการสะสมให้ครบเซ็ตจนเกิดพฤติกรรมเสพติดการซื้อซ้ำ[cite: 1]<br/><br/>
               <strong>บุหรี่ไฟฟ้า:</strong> มักดีไซน์เป็นรูปของเล่นน่ารักและกลิ่นหอม ซึ่งเป็นการใช้ <em>Salience</em> และ <em>Affect</em> ดึงดูด System 1 ของวัยรุ่น นโยบายภาครัฐจึงต้องสร้างกรอบความคิดใหม่ ("คิดผิดคิดใหม่") เปลี่ยน Package ให้เห็นภัยอันตรายที่แท้จริง และสร้าง <em>Commitment Device</em> ในการเลิกสูบ[cite: 1]
             </p>
           </div>
         </div>
-
       </section>
 
       <!-- CHAPTER 3 -->
-      <section id="sec-ch3" class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm dark:shadow-none transition-colors">
-        <div class="border-b border-slate-200 dark:border-slate-800 pb-5 flex items-center justify-between">
+      <section id="sec-ch3" class="custom-card border rounded-3xl p-6 sm:p-8 space-y-8 shadow-sm">
+        <div class="border-b border-slate-700/20 pb-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold">03</span>
+            <span class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 font-bold font-mono">03</span>
             <div>
-              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">บทที่ 3: การตัดสินใจข้ามเวลา & ระเบียบวิธีวิจัย (Intertemporal Choice & RCT)</h2>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Exponential vs Quasi-Hyperbolic ($\beta$-$\delta$), Threshold Conditions & RCT Econometrics</p>
+              <h2 class="text-xl sm:text-2xl font-bold">บทที่ 3: การตัดสินใจข้ามเวลา & ระเบียบวิธีวิจัย (Intertemporal Choice & RCT)</h2>
+              <p class="text-xs opacity-70">Exponential vs Quasi-Hyperbolic ($\beta$-$\delta$), Threshold Conditions & RCT Econometrics</p>
             </div>
           </div>
         </div>
 
-        <!-- Section 3.1 Mathematical Comparison -->
-        <div class="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
-          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="calculator" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i> การเปรียบเทียบเชิงคณิตศาสตร์: Exponential vs Quasi-Hyperbolic
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
-            <div class="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl space-y-2">
-              <span class="font-mono text-emerald-600 dark:text-emerald-400 font-semibold text-sm">Exponential Discounting Model (ทฤษฎีดั้งเดิม)</span>
-              <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg font-mono text-xs text-slate-800 dark:text-slate-200 overflow-x-auto">
-                $$U^t = \sum_{\tau=0}^{T-t} \delta^\tau u(c_{t+\tau}) = u(c_t) + \delta u(c_{t+1}) + \delta^2 u(c_{t+2}) + \dots$$
-              </div>
-              <ul class="text-slate-600 dark:text-slate-300 font-light space-y-1 list-disc list-inside text-xs">
-                <li>อัตราคิดลด $\delta = \frac{1}{1+\rho}$ มีค่าคงที่สม่ำเสมอ ($0 < \delta < 1$)[cite: 1]</li>
-                <li><strong>Time Consistent:</strong> สัดส่วนความอดทนไม่เปลี่ยนแปลงตามเวลา การวางแผนกับการลงมือทำจริงตรงกัน 100%[cite: 1]</li>
-              </ul>
+        <!-- Math Formulas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
+          <div class="custom-subcard border p-4 rounded-xl space-y-2">
+            <span class="font-mono text-emerald-500 font-semibold text-sm">Exponential Discounting Model (ทฤษฎีดั้งเดิม)</span>
+            <div class="p-3 custom-card rounded-lg font-mono text-xs overflow-x-auto border">
+              $$U^t = \sum_{\tau=0}^{T-t} \delta^\tau u(c_{t+\tau}) = u(c_t) + \delta u(c_{t+1}) + \delta^2 u(c_{t+2}) + \dots$$
             </div>
-
-            <div class="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl space-y-2">
-              <span class="font-mono text-rose-600 dark:text-rose-400 font-semibold text-sm">Quasi-Hyperbolic Discounting ($\beta$-$\delta$ Model)</span>
-              <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg font-mono text-xs text-slate-800 dark:text-slate-200 overflow-x-auto">
-                $$U^t = u(c_t) + \beta \sum_{\tau=1}^{T-t} \delta^\tau u(c_{t+\tau}) = u(c_t) + \beta\delta u(c_{t+1}) + \beta\delta^2 u(c_{t+2}) + \dots$$
-              </div>
-              <ul class="text-slate-600 dark:text-slate-300 font-light space-y-1 list-disc list-inside text-xs">
-                <li>มีพารามิเตอร์ $\beta$ (Present Bias) โดยที่ $0 < \beta < 1$[cite: 1]</li>
-                <li><strong>Time Inconsistent:</strong> สิ่งที่อยู่ในอนาคตจะถูกหักทอนมูลค่าด้วย $\beta$ ทันที แต่สิ่งที่เป็นปัจจุบันจะไม่โดนหัก[cite: 1]</li>
-              </ul>
-            </div>
+            <ul class="font-light space-y-1 list-disc list-inside text-xs opacity-90">
+              <li>อัตราคิดลด $\delta = \frac{1}{1+\rho}$ มีค่าคงที่สม่ำเสมอ ($0 < \delta < 1$)[cite: 1]</li>
+              <li><strong>Time Consistent:</strong> สัดส่วนความอดทนไม่เปลี่ยนแปลงตามเวลา การวางแผนกับการลงมือทำจริงตรงกัน 100%[cite: 1]</li>
+            </ul>
           </div>
 
-          <!-- Interactive Discounting Canvas (Fixed Height) -->
-          <div class="space-y-2 pt-2">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">กราฟเปรียบเทียบอัตราคิดลดมูลค่าเงินในอนาคต (Relative Value of 100 Utility)</span>
-              <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">กำหนด $\delta = 0.9, \beta = 0.6$</span>
+          <div class="custom-subcard border p-4 rounded-xl space-y-2">
+            <span class="font-mono text-rose-500 font-semibold text-sm">Quasi-Hyperbolic Discounting ($\beta$-$\delta$ Model)</span>
+            <div class="p-3 custom-card rounded-lg font-mono text-xs overflow-x-auto border">
+              $$U^t = u(c_t) + \beta \sum_{\tau=1}^{T-t} \delta^\tau u(c_{t+\tau}) = u(c_t) + \beta\delta u(c_{t+1}) + \beta\delta^2 u(c_{t+2}) + \dots$$
             </div>
-            <div class="w-full bg-white dark:bg-slate-900/90 rounded-xl p-4 border border-slate-200 dark:border-slate-800 relative" style="height: 320px;">
-              <canvas id="discountChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 3.2 Threshold Conditions for Investment vs Indulgence -->
-        <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4 text-xs sm:text-sm">
-          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="scale" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> เงื่อนไขเกณฑ์ตัดสินใจ (Threshold Conditions) สำหรับกิจกรรม 2 ประเภท
-          </h3>
-          <p class="text-slate-600 dark:text-slate-300 font-light leading-relaxed">
-            กำหนดให้ผลตอบแทนของกิจกรรมคือ $I_{now}$ ในปัจจุบัน และ $I_{later}$ ในอนาคต โดยกำหนดให้อรรถประโยชน์ $u(x) = x$ การตัดสินใจลงมือทำจะเกิดขึ้นเมื่อผลประโยชน์สุทธิมากกว่าศูนย์[cite: 1]:
-          </p>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-              <span class="font-bold text-emerald-700 dark:text-emerald-300 block">Investment Activity ($I_{now} < 0, I_{later} > 0$):</span>
-              <p class="text-slate-600 dark:text-slate-300 font-light">
-                * <strong>Planner's Threshold:</strong> $I_{now} + \delta(I_{later}) > 0 \implies I_{now} > -\delta I_{later}$[cite: 1]<br/>
-                * <strong>Doer's Threshold:</strong> $I_{now} + \beta\delta(I_{later}) > 0 \implies I_{now} > -\beta\delta I_{later}$[cite: 1]<br/>
-                <strong class="text-rose-600 dark:text-rose-400">ผลลัพธ์: เพราะ $\beta < 1$ ทำให้เกณฑ์ของ Doer เข้มงวดกว่า Planner มนุษย์จึงเกิดปัญหา Under-investment (ลงทุนน้อยเกินไป อ่านหนังสือน้อยไป ออมเงินน้อยไป)</strong>[cite: 1]
-              </p>
-            </div>
-
-            <div class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-              <span class="font-bold text-rose-700 dark:text-rose-300 block">Indulgence Activity ($I_{now} > 0, I_{later} < 0$):</span>
-              <p class="text-slate-600 dark:text-slate-300 font-light">
-                * <strong>Planner's Threshold:</strong> $I_{now} + \delta(I_{later}) > 0 \implies I_{now} > -\delta I_{later}$[cite: 1]<br/>
-                * <strong>Doer's Threshold:</strong> $I_{now} + \beta\delta(I_{later}) > 0 \implies I_{now} > -\beta\delta I_{later}$[cite: 1]<br/>
-                <strong class="text-rose-600 dark:text-rose-400">ผลลัพธ์: โทษในอนาคตถูกทอนด้วย $\beta$ ทำให้ Doer ยอมเสพสุขง่ายกว่า Planner เกิดปัญหา Over-consumption (เสพสุขเกินพอดี กินน้ำตาลมากไป ไถมือถือจนดึก)</strong>[cite: 1]
-              </p>
-            </div>
-          </div>
-
-          <div class="p-3 bg-slate-100 dark:bg-slate-900 rounded-lg text-xs text-slate-600 dark:text-slate-300 space-y-1">
-            <strong>กรณีศึกษาความล้มเหลวระดับโลกจาก Present Bias:</strong>
-            <ul class="list-disc list-inside font-light">
-              <li><strong>British Petroleum (BP):</strong> ประหยัดงบประมาณไม่ยอมเปลี่ยนถังแรงดันราคาแพง จนเกิดระเบิดและต้องชดเชยค่าเสียหายมากกว่าเดิมมหาศาล[cite: 1]</li>
-              <li><strong>Volkswagen:</strong> โกงการตรวจสอบไอเสียรถยนต์เพื่อผลกำไรระยะสั้น จนเกิดวิกฤตความเชื่อมั่นระดับโลก[cite: 1]</li>
-              <li><strong>Subprime Crisis:</strong> ผู้ซื้อบ้านละเลยภาระผ่อนในอนาคตเพื่อเสพความสุขจากการมีบ้านทันที จนเกิดการผิดนัดชำระหนี้ครั้งใหญ่[cite: 1]</li>
+            <ul class="font-light space-y-1 list-disc list-inside text-xs opacity-90">
+              <li>มีพารามิเตอร์ $\beta$ (Present Bias) โดยที่ $0 < \beta < 1$[cite: 1]</li>
+              <li><strong>Time Inconsistent:</strong> สิ่งที่อยู่ในอนาคตจะถูกหักทอนมูลค่าด้วย $\beta$ ทันที แต่สิ่งที่เป็นปัจจุบันจะไม่โดนหัก[cite: 1]</li>
             </ul>
           </div>
         </div>
 
-        <!-- Section 3.3 RCT Econometric Model -->
-        <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 space-y-3 text-xs sm:text-sm">
-          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i> การประเมินผลนโยบายด้วย RCT และการวิเคราะห์ Interaction Effect
+        <!-- NATIVE CANVAS: Discounting Chart -->
+        <div class="custom-subcard border rounded-2xl p-5 sm:p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base sm:text-lg font-bold">กราฟเปรียบเทียบอัตราคิดลดมูลค่าเงินในอนาคต (Relative Value of 100 Utility)</h3>
+            <span class="text-xs font-mono opacity-70">กำหนด $\delta = 0.9, \beta = 0.6$</span>
+          </div>
+
+          <!-- NATIVE CANVAS 2 -->
+          <div class="w-full custom-card rounded-xl p-3 border relative overflow-hidden flex flex-col items-center">
+            <canvas id="nativeDiscountCanvas" width="700" height="300" class="w-full max-w-full h-auto"></canvas>
+          </div>
+        </div>
+
+        <!-- Threshold Conditions -->
+        <div class="custom-subcard border rounded-2xl p-5 sm:p-6 space-y-4 text-xs sm:text-sm">
+          <h3 class="text-base font-bold flex items-center gap-2 text-indigo-500">
+            เงื่อนไขเกณฑ์ตัดสินใจ (Threshold Conditions) สำหรับกิจกรรม 2 ประเภท
           </h3>
-          <p class="text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+          <p class="font-light opacity-90 leading-relaxed">
+            กำหนดให้ผลตอบแทนของกิจกรรมคือ $I_{now}$ ในปัจจุบัน และ $I_{later}$ ในอนาคต โดยกำหนดให้อรรถประโยชน์ $u(x) = x$ การตัดสินใจลงมือทำจะเกิดขึ้นเมื่อผลประโยชน์สุทธิมากกว่าศูนย์[cite: 1]:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-light">
+            <div class="p-4 custom-card rounded-xl border space-y-2">
+              <span class="font-bold text-emerald-500 block">Investment Activity ($I_{now} < 0, I_{later} > 0$):</span>
+              <p class="opacity-90">
+                * <strong>Planner's Threshold:</strong> $I_{now} + \delta(I_{later}) > 0 \implies I_{now} > -\delta I_{later}$[cite: 1]<br/>
+                * <strong>Doer's Threshold:</strong> $I_{now} + \beta\delta(I_{later}) > 0 \implies I_{now} > -\beta\delta I_{later}$[cite: 1]<br/>
+                <strong class="text-rose-500">ผลลัพธ์: เพราะ $\beta < 1$ ทำให้เกณฑ์ของ Doer เข้มงวดกว่า Planner มนุษย์จึงเกิดปัญหา Under-investment (ลงทุนน้อยเกินไป อ่านหนังสือน้อยไป ออมเงินน้อยไป)</strong>[cite: 1]
+              </p>
+            </div>
+
+            <div class="p-4 custom-card rounded-xl border space-y-2">
+              <span class="font-bold text-rose-500 block">Indulgence Activity ($I_{now} > 0, I_{later} < 0$):</span>
+              <p class="opacity-90">
+                * <strong>Planner's Threshold:</strong> $I_{now} + \delta(I_{later}) > 0 \implies I_{now} > -\delta I_{later}$[cite: 1]<br/>
+                * <strong>Doer's Threshold:</strong> $I_{now} + \beta\delta(I_{later}) > 0 \implies I_{now} > -\beta\delta I_{later}$[cite: 1]<br/>
+                <strong class="text-rose-500">ผลลัพธ์: โทษในอนาคตถูกทอนด้วย $\beta$ ทำให้ Doer ยอมเสพสุขง่ายกว่า Planner เกิดปัญหา Over-consumption (เสพสุขเกินพอดี กินน้ำตาลมากไป ไถมือถือจนดึก)</strong>[cite: 1]
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RCT Regression Model -->
+        <div class="custom-subcard border rounded-2xl p-5 sm:p-6 space-y-3 text-xs sm:text-sm">
+          <h3 class="text-base font-bold flex items-center gap-2 text-emerald-500">
+            การประเมินผลนโยบายด้วย RCT และการวิเคราะห์ Interaction Effect
+          </h3>
+          <p class="font-light opacity-90 leading-relaxed">
             สมการถดถอยเชิงพฤติกรรมเพื่อแยกผลกระทบของนโยบาย (Treatment) ออกจากตัวแปรกวนภายนอก[cite: 1]:
           </p>
-          <div class="p-3 bg-white dark:bg-slate-900 rounded-lg font-mono text-center text-xs text-indigo-600 dark:text-indigo-300 overflow-x-auto border border-slate-200 dark:border-slate-800">
+          <div class="p-3 custom-card rounded-lg font-mono text-center text-xs text-indigo-500 overflow-x-auto border">
             $$Y_i = \alpha + \beta [T_i] + \gamma (T_i \times X_i) + \lambda(X_i) + \varepsilon_i$$
           </div>
-          <p class="text-slate-600 dark:text-slate-300 font-light leading-relaxed">
+          <p class="font-light opacity-90 leading-relaxed">
             * <strong>กรณีศึกษาหญิงตั้งครรภ์ในชนบท:</strong> สัมประสิทธิ์ $\gamma$ แสดงปฏิสัมพันธ์ระหว่างการส่งข้อมูลสะกิดใจ ($T_i$) กับระยะทางบ้าน-โรงพยาบาล ($X_i$) ผลการศึกษาพบว่า Information Nudge ได้ผลดีเฉพาะคนที่บ้านใกล้โรงพยาบาล แต่ถ้าบ้านอยู่ไกลมาก (มีอุปสรรคทางกายภาพ/Friction สูง) การให้ข้อมูลจะไม่ช่วยอะไรเลย การออกแบบนโยบายจึงต้องลด Friction ด้านระยะทางควบคู่ด้วยเสมอ[cite: 1]
           </p>
         </div>
-
       </section>
 
       <!-- CTA TO QUIZ -->
       <section class="text-center py-8">
-        <button id="goto-quiz-btn" class="px-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-indigo-600 via-sky-500 to-teal-400 text-white shadow-xl shadow-indigo-600/20 hover:opacity-95 transition transform hover:-translate-y-0.5 cursor-pointer">
+        <button id="goto-quiz-btn" class="px-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-indigo-600 via-sky-500 to-teal-400 text-white shadow-xl hover:opacity-95 transition transform hover:-translate-y-0.5 cursor-pointer">
           อ่านทบทวนครบแล้ว $\rightarrow$ เริ่มทำข้อสอบจำลอง 30 ข้อ (สุ่มจาก 100 ข้อ)
         </button>
       </section>
@@ -536,112 +492,114 @@
     <div id="quiz-view" class="hidden max-w-3xl mx-auto space-y-6">
       
       <!-- START QUIZ PROMPT -->
-      <div id="quiz-start-screen" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 text-center shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors">
-        <div class="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="help-circle" class="w-8 h-8"></i>
+      <div id="quiz-start-screen" class="custom-card border rounded-3xl p-6 sm:p-10 text-center shadow-xl space-y-6">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center mx-auto">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">ข้อสอบวัดระดับเศรษฐศาสตร์พฤติกรรม</h2>
-        <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm max-w-md mx-auto mb-6 font-light">
-          ระบบจะทำการ <strong>สุ่ม 30 ข้อ จากคลังข้อสอบทั้งหมด 100 ข้อ</strong> ในระดับความยากปานกลางถึงยาก โดยในแต่ละรอบข้อสอบจะไม่ซ้ำกัน พร้อมระบบตรวจและเฉลยละเอียดรายข้อ[cite: 1]
-        </p>
-
-        <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto mb-6 text-center text-xs">
-          <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
-            <span class="text-slate-500 dark:text-slate-400 block mb-0.5">จำนวนข้อสอบ</span>
-            <span class="text-base font-bold text-slate-900 dark:text-white">30 ข้อ</span>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
-            <span class="text-slate-500 dark:text-slate-400 block mb-0.5">คลังข้อสอบ</span>
-            <span class="text-base font-bold text-indigo-600 dark:text-indigo-400">100 ข้อ</span>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
-            <span class="text-slate-500 dark:text-slate-400 block mb-0.5">ระบบสุ่ม</span>
-            <span class="text-base font-bold text-teal-600 dark:text-teal-400">ไม่ซ้ำข้อ</span>
-          </div>
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold mb-2">ข้อสอบวัดระดับเศรษฐศาสตร์พฤติกรรม</h2>
+          <p class="text-xs sm:text-sm opacity-70 max-w-md mx-auto font-light">
+            ระบบจะทำการ <strong>สุ่ม 30 ข้อ จากคลังข้อสอบทั้งหมด 100 ข้อ</strong> ในระดับความยากปานกลางถึงยาก โดยในแต่ละรอบข้อสอบจะไม่ซ้ำกัน พร้อมระบบตรวจและเฉลยละเอียดรายข้อ[cite: 1]
+          </p>
         </div>
 
-        <button id="quiz-run-btn" class="w-full sm:w-auto px-10 py-3.5 rounded-2xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition cursor-pointer">
+        <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto text-center text-xs">
+          <div class="custom-subcard p-3 rounded-xl border">
+            <span class="opacity-70 block mb-0.5">จำนวนข้อสอบ</span>
+            <span class="text-base font-bold">30 ข้อ</span>
+          </div>
+          <div class="custom-subcard p-3 rounded-xl border">
+            <span class="opacity-70 block mb-0.5">คลังข้อสอบ</span>
+            <span class="text-base font-bold text-indigo-500">100 ข้อ</span>
+          </div>
+          <div class="custom-subcard p-3 rounded-xl border">
+            <span class="opacity-70 block mb-0.5">ระบบสุ่ม</span>
+            <span class="text-base font-bold text-teal-500">ไม่ซ้ำข้อ</span>
+          </div>
+        </div>
+
+        <button id="quiz-run-btn" class="w-full sm:w-auto px-10 py-3.5 rounded-2xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg transition cursor-pointer">
           เริ่มสุ่มทำข้อสอบทันที
         </button>
       </div>
 
       <!-- ACTIVE QUIZ PANEL -->
-      <div id="quiz-active-panel" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl dark:shadow-2xl space-y-6 transition-colors">
+      <div id="quiz-active-panel" class="hidden custom-card border rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
         <!-- Progress Header -->
-        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+        <div class="flex items-center justify-between border-b border-slate-700/20 pb-4">
           <div>
-            <span id="quiz-cat-badge" class="text-[10px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 px-2.5 py-1 rounded-md">Category</span>
-            <h4 class="text-xs text-slate-500 dark:text-slate-400 mt-2">ข้อที่ <span id="quiz-current-num" class="text-slate-900 dark:text-white font-bold text-base">1</span> จากทั้งหมด <span id="quiz-total-num">30</span> ข้อ</h4>
+            <span id="quiz-cat-badge" class="text-[10px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-indigo-500 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-md">Category</span>
+            <h4 class="text-xs opacity-70 mt-2">ข้อที่ <span id="quiz-current-num" class="font-bold text-base">1</span> จากทั้งหมด <span id="quiz-total-num">30</span> ข้อ</h4>
           </div>
           <div class="text-right">
-            <span class="text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-full text-slate-700 dark:text-slate-300 font-mono">
-              คะแนนสะสม: <strong id="quiz-live-score" class="text-teal-600 dark:text-teal-400">0</strong>
+            <span class="text-xs custom-subcard border px-3 py-1.5 rounded-full font-mono">
+              คะแนนสะสม: <strong id="quiz-live-score" class="text-teal-500">0</strong>
             </span>
           </div>
         </div>
 
         <!-- Progress Bar -->
-        <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+        <div class="w-full custom-subcard rounded-full h-1.5 overflow-hidden">
           <div id="quiz-progress-bar" class="bg-gradient-to-r from-indigo-500 to-teal-400 h-1.5 rounded-full transition-all duration-300" style="width: 3.33%"></div>
         </div>
 
         <!-- Question Text -->
         <div class="min-h-[80px] flex items-center">
-          <h3 id="quiz-question-title" class="text-base sm:text-lg font-medium text-slate-900 dark:text-slate-100 leading-relaxed">
+          <h3 id="quiz-question-title" class="text-base sm:text-lg font-medium leading-relaxed">
             Question Loading...
           </h3>
         </div>
 
         <!-- Option Buttons List -->
         <div id="quiz-options-box" class="space-y-3">
-          <!-- Dynamically populated -->
+          <!-- Populated by JS -->
         </div>
 
         <!-- Feedback Banner -->
-        <div id="quiz-feedback-box" class="hidden p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-1">
-          <div id="quiz-feedback-status" class="flex items-center gap-2 font-semibold"></div>
-          <p id="quiz-feedback-text" class="text-slate-600 dark:text-slate-300 font-light leading-relaxed"></p>
+        <div id="quiz-feedback-box" class="hidden p-4 rounded-2xl custom-subcard border text-xs sm:text-sm space-y-1">
+          <div id="quiz-feedback-status" class="font-semibold"></div>
+          <p id="quiz-feedback-text" class="opacity-80 font-light leading-relaxed"></p>
         </div>
 
         <!-- Bottom Controller -->
         <div class="flex items-center justify-end pt-2">
           <button id="quiz-next-btn" class="hidden px-6 py-2.5 rounded-xl font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-2 text-sm shadow-md cursor-pointer">
             <span>ข้อถัดไป</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </button>
         </div>
       </div>
 
       <!-- FINAL SCORE REPORT -->
-      <div id="quiz-score-panel" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 text-center shadow-xl dark:shadow-2xl space-y-6 transition-colors">
-        <div class="w-20 h-20 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto">
-          <i data-lucide="award" class="w-10 h-10"></i>
+      <div id="quiz-score-panel" class="hidden custom-card border rounded-3xl p-6 sm:p-10 text-center shadow-xl space-y-6">
+        <div class="w-20 h-20 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-500 flex items-center justify-center mx-auto">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
         </div>
         <div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">รายงานผลการทดสอบ</h2>
-          <p id="quiz-result-summary" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 font-light">คุณทำข้อสอบเสร็จสิ้นแล้ว</p>
+          <h2 class="text-2xl sm:text-3xl font-bold">รายงานผลการทดสอบ</h2>
+          <p id="quiz-result-summary" class="text-xs sm:text-sm opacity-70 mt-1 font-light">คุณทำข้อสอบเสร็จสิ้นแล้ว</p>
         </div>
 
-        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 max-w-xs mx-auto">
-          <div class="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider mb-1">คะแนนสุทธิ</div>
-          <div class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-500 dark:from-indigo-400 dark:to-teal-300 font-mono">
-            <span id="quiz-final-score">0</span> <span class="text-lg text-slate-400 font-normal">/ 30</span>
+        <div class="custom-subcard border rounded-2xl p-5 max-w-xs mx-auto">
+          <div class="opacity-70 text-xs uppercase tracking-wider mb-1">คะแนนสุทธิ</div>
+          <div class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-teal-400 font-mono">
+            <span id="quiz-final-score">0</span> <span class="text-lg opacity-40 font-normal">/ 30</span>
           </div>
-          <div id="quiz-score-percent" class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-mono">คิดเป็น 0%</div>
+          <div id="quiz-score-percent" class="text-xs opacity-70 mt-2 font-mono">คิดเป็น 0%</div>
         </div>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <button id="quiz-toggle-review-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer">
-            <i data-lucide="list" class="w-4 h-4 text-indigo-500"></i> ดูเฉลยละเอียดทั้ง 30 ข้อ
+          <button id="quiz-toggle-review-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border custom-subcard hover:opacity-80 text-xs sm:text-sm transition cursor-pointer">
+            ดูเฉลยละเอียดทั้ง 30 ข้อ
           </button>
-          <button id="quiz-retry-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-teal-500 hover:opacity-95 text-white font-medium text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
-            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> สุ่มทำข้อสอบชุดใหม่
+          <button id="quiz-retry-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-teal-500 text-white font-medium text-xs sm:text-sm transition shadow-md cursor-pointer">
+            สุ่มทำข้อสอบชุดใหม่
           </button>
         </div>
 
         <!-- Full Review Container -->
-        <div id="quiz-review-container" class="hidden mt-8 text-left border-t border-slate-100 dark:border-slate-800 pt-6 max-h-[420px] overflow-y-auto custom-scrollbar pr-2 space-y-4">
-          <!-- Dynamically populated review items -->
+        <div id="quiz-review-container" class="hidden mt-8 text-left border-t border-slate-700/20 pt-6 max-h-[420px] overflow-y-auto custom-scrollbar pr-2 space-y-4">
+          <!-- Populated by JS -->
         </div>
       </div>
 
@@ -650,188 +608,212 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-950 py-6 text-center text-xs text-slate-500 transition-colors">
+  <footer class="border-t border-slate-700/20 custom-card py-6 text-center text-xs opacity-60 transition-colors">
     <p>Behavioral Economics & Public Policy Courseware • Designed for Midterm Mastery</p>
   </footer>
 
   <!-- ================= SCRIPT LOGIC ================= -->
   <script>
     // -------------------------------------------------------------
-    // 1. ROBUST THEME SWITCHER (Light / Dark Mode)
+    // 1. BULLETPROOF THEME SWITCHER (Attribute-based)
     // -------------------------------------------------------------
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIconContainer = document.getElementById('theme-icon-container');
-    const htmlRoot = document.documentElement;
+    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const themeIconSpan = document.getElementById('theme-icon');
 
-    function applyTheme(isDark) {
-      if (isDark) {
-        htmlRoot.classList.add('dark');
-        themeIconContainer.innerHTML = '<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>';
-        localStorage.setItem('be_theme', 'dark');
+    function updateThemeIcon(theme) {
+      if (theme === 'dark') {
+        themeIconSpan.innerHTML = '<svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>';
       } else {
-        htmlRoot.classList.remove('dark');
-        themeIconContainer.innerHTML = '<i data-lucide="moon" class="w-4 h-4 text-slate-700"></i>';
-        localStorage.setItem('be_theme', 'light');
+        themeIconSpan.innerHTML = '<svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>';
       }
-      if (window.lucide) lucide.createIcons();
-      updateChartsTheme(isDark);
     }
 
-    // Init Theme based on localStorage or default dark
-    const storedTheme = localStorage.getItem('be_theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialDark = storedTheme ? (storedTheme === 'dark') : prefersDark;
-    applyTheme(initialDark);
+    function setTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      localStorage.setItem('be_theme', theme);
+      updateThemeIcon(theme);
+      // Redraw native charts immediately
+      drawNativeCharts();
+    }
+
+    const savedTheme = localStorage.getItem('be_theme') || 'dark';
+    setTheme(savedTheme);
 
     themeToggleBtn.addEventListener('click', () => {
-      const isCurrentlyDark = htmlRoot.classList.contains('dark');
-      applyTheme(!isCurrentlyDark);
+      const currentTheme = htmlEl.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
     });
 
     // -------------------------------------------------------------
-    // 2. CHART INITIALIZATION (Reliable Canvas Loading)
+    // 2. PURE NATIVE CANVAS CHART ENGINE (No External Dependency)
     // -------------------------------------------------------------
-    let prospectChartInstance = null;
-    let discountChartInstance = null;
+    function drawNativeCharts() {
+      const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)';
+      const textColor = isDark ? '#94a3b8' : '#64748b';
+      const axisColor = isDark ? '#475569' : '#cbd5e1';
 
-    function createOrUpdateCharts() {
-      if (typeof Chart === 'undefined') {
-        console.error("Chart.js failed to load.");
-        return;
-      }
+      // 2.1 Draw Prospect Theory Canvas
+      const c1 = document.getElementById('nativeProspectCanvas');
+      if (c1) {
+        const ctx = c1.getContext('2d');
+        const w = c1.width;
+        const h = c1.height;
+        ctx.clearRect(0, 0, w, h);
 
-      const isDark = htmlRoot.classList.contains('dark');
-      const gridColor = isDark ? '#1e293b' : '#e2e8f0';
-      const tickColor = isDark ? '#94a3b8' : '#64748b';
+        const originX = w / 2;
+        const originY = h / 2;
 
-      // 2.1 Prospect Chart
-      const ctxProspect = document.getElementById('prospectChart');
-      if (ctxProspect) {
-        const xValues = [];
-        const yValues = [];
-        for (let x = -100; x <= 100; x += 5) {
-          xValues.push(x);
-          if (x >= 0) {
-            yValues.push(Math.pow(x, 0.88));
+        // Grid Lines
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        for (let x = 50; x < w; x += 50) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 30; y < h; y += 30) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = axisColor;
+        ctx.lineWidth = 1.5;
+        // X Axis
+        ctx.beginPath(); ctx.moveTo(30, originY); ctx.lineTo(w - 30, originY); ctx.stroke();
+        // Y Axis
+        ctx.beginPath(); ctx.moveTo(originX, 20); ctx.lineTo(originX, h - 20); ctx.stroke();
+
+        // Labels
+        ctx.fillStyle = textColor;
+        ctx.font = '11px Prompt';
+        ctx.fillText('+ Gains (กำไร)', w - 95, originY - 10);
+        ctx.fillText('- Losses (ขาดทุน)', 40, originY - 10);
+        ctx.fillText('+ v(x)', originX + 10, 30);
+        ctx.fillText('- v(x)', originX + 10, h - 30);
+        ctx.fillText('Reference Point (0,0)', originX + 8, originY + 16);
+
+        // Curve (Prospect Theory)
+        ctx.beginPath();
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 3;
+
+        let first = true;
+        for (let px = 40; px <= w - 40; px += 2) {
+          const xVal = (px - originX) / 2.5; // Scale
+          let yVal = 0;
+          if (xVal >= 0) {
+            yVal = Math.pow(xVal, 0.88) * 2;
           } else {
-            yValues.push(-2.25 * Math.pow(Math.abs(x), 0.88));
+            yVal = -2.25 * Math.pow(Math.abs(xVal), 0.88) * 2;
+          }
+          const py = originY - yVal;
+
+          if (first) {
+            ctx.moveTo(px, py);
+            first = false;
+          } else {
+            ctx.lineTo(px, py);
           }
         }
+        ctx.stroke();
 
-        if (prospectChartInstance) {
-          prospectChartInstance.destroy();
-        }
-
-        prospectChartInstance = new Chart(ctxProspect, {
-          type: 'line',
-          data: {
-            labels: xValues,
-            datasets: [{
-              label: 'Value Function v(x)',
-              data: yValues,
-              borderColor: '#0284c7',
-              borderWidth: 3,
-              pointRadius: 0,
-              fill: false,
-              tension: 0.2
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 400 },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: (ctx) => ` v(${ctx.parsed.x}) = ${ctx.parsed.y.toFixed(2)}`
-                }
-              }
-            },
-            scales: {
-              x: {
-                title: { display: true, text: 'การเปลี่ยนแปลงจริงเทียบจุดอ้างอิง (Losses < 0 < Gains)', color: tickColor, font: { size: 11, family: 'Prompt' } },
-                grid: { color: gridColor },
-                ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } }
-              },
-              y: {
-                title: { display: true, text: 'คุณค่าทางใจ v(x)', color: tickColor, font: { size: 11, family: 'Prompt' } },
-                grid: { color: gridColor },
-                ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } }
-              }
-            }
-          }
-        });
+        // Annotations
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('Concave (Risk Averse)', originX + 90, originY - 80);
+        ctx.fillStyle = '#f43f5e';
+        ctx.fillText('Convex & Steeper (Loss Averse, λ=2.25)', 50, originY + 90);
       }
 
-      // 2.2 Discount Chart
-      const ctxDiscount = document.getElementById('discountChart');
-      if (ctxDiscount) {
-        const periods = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+      // 2.2 Draw Discounting Canvas
+      const c2 = document.getElementById('nativeDiscountCanvas');
+      if (c2) {
+        const ctx = c2.getContext('2d');
+        const w = c2.width;
+        const h = c2.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const padLeft = 60;
+        const padBottom = 40;
+        const plotW = w - padLeft - 40;
+        const plotH = h - padBottom - 30;
+
+        // Grid
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+          const y = 30 + (plotH / 5) * i;
+          ctx.beginPath(); ctx.moveTo(padLeft, y); ctx.lineTo(w - 40, y); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = axisColor;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(padLeft, 20);
+        ctx.lineTo(padLeft, h - padBottom);
+        ctx.lineTo(w - 30, h - padBottom);
+        ctx.stroke();
+
+        const periods = 8;
         const delta = 0.9;
         const beta = 0.6;
-        
-        const expCurve = periods.map(t => Math.pow(delta, t) * 100);
-        const quasiCurve = periods.map(t => t === 0 ? 100 : beta * Math.pow(delta, t) * 100);
 
-        if (discountChartInstance) {
-          discountChartInstance.destroy();
+        // X Ticks
+        ctx.fillStyle = textColor;
+        ctx.font = '10px Prompt';
+        for (let t = 0; t <= periods; t++) {
+          const px = padLeft + (plotW / periods) * t;
+          ctx.fillText(t === 0 ? 'วันนี้' : `งวด ${t}`, px - 12, h - padBottom + 18);
         }
 
-        discountChartInstance = new Chart(ctxDiscount, {
-          type: 'line',
-          data: {
-            labels: periods.map(t => t === 0 ? 'วันนี้ (t=0)' : `อีก ${t} งวด`),
-            datasets: [
-              {
-                label: 'Exponential (Rational / Planner)',
-                data: expCurve,
-                borderColor: '#10b981',
-                borderWidth: 2.5,
-                pointRadius: 3.5,
-                pointBackgroundColor: '#10b981',
-                tension: 0.1
-              },
-              {
-                label: 'Quasi-Hyperbolic (Humans / Doer with β=0.6)',
-                data: quasiCurve,
-                borderColor: '#f43f5e',
-                borderWidth: 2.5,
-                borderDash: [6, 4],
-                pointRadius: 3.5,
-                pointBackgroundColor: '#f43f5e',
-                tension: 0.1
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 400 },
-            plugins: {
-              legend: {
-                labels: { color: isDark ? '#cbd5e1' : '#334155', font: { size: 11, family: 'Prompt' } }
-              }
-            },
-            scales: {
-              x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } } },
-              y: { 
-                title: { display: true, text: 'มูลค่าสัมพัทธ์ในใจ (Relative Value)', color: tickColor, font: { size: 11, family: 'Prompt' } },
-                grid: { color: gridColor }, 
-                ticks: { color: tickColor, font: { size: 10, family: 'Prompt' } } 
-              }
-            }
-          }
-        });
+        // Y Ticks
+        ctx.fillText('100%', padLeft - 35, 35);
+        ctx.fillText('50%', padLeft - 30, 30 + plotH / 2);
+        ctx.fillText('0%', padLeft - 25, h - padBottom);
+
+        // 1. Exponential Curve (Green)
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let t = 0; t <= periods; t++) {
+          const val = Math.pow(delta, t);
+          const px = padLeft + (plotW / periods) * t;
+          const py = (h - padBottom) - (val * plotH);
+          if (t === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // 2. Quasi-Hyperbolic Curve (Red Dashed)
+        ctx.strokeStyle = '#f43f5e';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        for (let t = 0; t <= periods; t++) {
+          const val = t === 0 ? 1.0 : beta * Math.pow(delta, t);
+          const px = padLeft + (plotW / periods) * t;
+          const py = (h - padBottom) - (val * plotH);
+          if (t === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]); // Reset dash
+
+        // Legend
+        ctx.fillStyle = '#10b981';
+        ctx.fillRect(w - 280, 25, 14, 14);
+        ctx.fillStyle = textColor;
+        ctx.font = '11px Prompt';
+        ctx.fillText('Exponential (Planner: วินัยคงที่)', w - 260, 36);
+
+        ctx.fillStyle = '#f43f5e';
+        ctx.fillRect(w - 280, 45, 14, 14);
+        ctx.fillStyle = textColor;
+        ctx.fillText('Quasi-Hyperbolic (Doer: ตกฮวบด้วย β)', w - 260, 56);
       }
     }
 
-    function updateChartsTheme(isDark) {
-      createOrUpdateCharts();
-    }
-
     // -------------------------------------------------------------
-    // 3. 100-QUESTION DATABASE (Comprehensive Coverage)
+    // 3. 100-QUESTION DATABASE (Comprehensive)
     // -------------------------------------------------------------
     const masterQuestionPool = [
       {
@@ -1196,8 +1178,8 @@
       }
     ];
 
-    // Seed up to 100 analytical questions
-    const advancedTopicSeeds = [
+    // Seed questions up to 100
+    const seeds = [
       { name: "Projection Bias", desc: "การคาดการณ์รสนิยมในอนาคตผิดพลาดเพราะนำอารมณ์หรือสภาวะหิว/อิ่มในปัจจุบันไปตัดสิน", correct: "ประเมินความต้องการบริโภคในอนาคตสูงเกินไปเมื่อไปซื้อของขณะกำลังหิวจัด", cat: "Nonstandard Beliefs" },
       { name: "Endowment Effect", desc: "การประเมินมูลค่าสิ่งของที่ตนเองครอบครองสูงกว่าราคาที่ตนเองยินดีจ่ายซื้อ", correct: "ตั้งราคาขายแก้วน้ำที่ตนถือครองสูงกว่าราคาที่ตนยอมจ่ายซื้อของชิ้นเดียวกันเกือบ 2 เท่า", cat: "Prospect Theory" },
       { name: "Overconfidence Bias", desc: "การมั่นใจในความสามารถหรือข้อมูลของตนเองสูงเกินจริง", correct: "นักลงทุนทำการซื้อขายหลักทรัพย์บ่อยเกินไป (Excessive Trading) เพราะคิดว่าตนคาดการณ์ตลาดได้แม่นยำ", cat: "Nonstandard Beliefs" },
@@ -1207,11 +1189,11 @@
       { name: "Bundling Strategy", desc: "การจับคู่สิ่งที่ต้องทำกับสิ่งที่อยากทำเพื่อลด Intention-Behavior Gap", correct: "การอนุญาตให้ตนเองดูซีรีส์เรื่องโปรดได้เฉพาะตอนที่กำลังวิ่งบนลู่วิ่งเท่านั้น", cat: "Nudge Plus" }
     ];
 
-    let seedCounter = masterQuestionPool.length + 1;
+    let counter = masterQuestionPool.length + 1;
     while (masterQuestionPool.length < 100) {
-      let t = advancedTopicSeeds[seedCounter % advancedTopicSeeds.length];
+      let t = seeds[counter % seeds.length];
       masterQuestionPool.push({
-        q: `[โจทย์วิเคราะห์ประยุกต์ที่ ${seedCounter}] ในบริบทของแนวคิด "${t.name}" (${t.desc}) ข้อใดสะท้อนพฤติกรรมนี้ได้ถูกต้องตามหลักเศรษฐศาสตร์พฤติกรรม?`,
+        q: `[โจทย์วิเคราะห์ประยุกต์ที่ ${counter}] ในบริบทของแนวคิด "${t.name}" (${t.desc}) ข้อใดสะท้อนพฤติกรรมนี้ได้ถูกต้องตามหลักเศรษฐศาสตร์พฤติกรรม?`,
         cat: t.cat,
         options: [
           t.correct,
@@ -1222,11 +1204,11 @@
         ans: 0,
         exp: `แก่นสาระของ ${t.name}: ${t.correct} ซึ่งสะท้อนความบกพร่องเชิงโครงสร้างในการตัดสินใจของมนุษย์ตามหลักเศรษฐศาสตร์พฤติกรรม[cite: 1]`
       });
-      seedCounter++;
+      counter++;
     }
 
     // -------------------------------------------------------------
-    // 4. QUIZ CONTROLLER LOGIC (30 Questions Random Sample)
+    // 4. QUIZ CONTROLLER (30 Questions Random Sample)
     // -------------------------------------------------------------
     const QUIZ_SIZE = 30;
     let currentQuizSet = [];
@@ -1244,24 +1226,19 @@
       if (target === 'quiz') {
         coursebookView.classList.add('hidden');
         quizView.classList.remove('hidden');
-        navQuizBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-        navQuizBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
-        navBookBtn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-        navBookBtn.classList.add('text-slate-600', 'dark:text-slate-400');
+        navQuizBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5";
+        navBookBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5";
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         quizView.classList.add('hidden');
         coursebookView.classList.remove('hidden');
-        navBookBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-        navBookBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
-        navQuizBtn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-        navQuizBtn.classList.add('text-slate-600', 'dark:text-slate-400');
+        navBookBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5";
+        navQuizBtn.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5";
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Re-render Math and Charts when returning to coursebook
+        // Redraw Native Canvas
+        setTimeout(drawNativeCharts, 50);
         if (window.MathJax) MathJax.typesetPromise();
-        createOrUpdateCharts();
       }
-      if (window.lucide) lucide.createIcons();
     }
 
     navBookBtn.onclick = () => switchView('book');
@@ -1328,9 +1305,9 @@
 
       q.options.forEach((optText, idx) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 transition flex items-start gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200 group cursor-pointer";
+        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl custom-subcard hover:opacity-90 border transition flex items-start gap-3 text-xs sm:text-sm group cursor-pointer";
         btn.innerHTML = `
-          <span class="w-6 h-6 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover:border-indigo-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 shrink-0 mt-0.5 font-mono">
+          <span class="w-6 h-6 rounded-lg custom-card border flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5 font-mono">
             ${String.fromCharCode(65 + idx)}
           </span>
           <span class="leading-relaxed flex-1">${optText}</span>
@@ -1338,8 +1315,6 @@
         btn.onclick = () => selectOption(idx, btn);
         optsBox.appendChild(btn);
       });
-
-      if (window.lucide) lucide.createIcons();
     }
 
     function selectOption(selectedIdx, selectedBtn) {
@@ -1349,13 +1324,11 @@
 
       allBtns.forEach((btn, idx) => {
         btn.disabled = true;
-        btn.classList.remove('hover:bg-slate-100', 'dark:hover:bg-slate-800/80', 'cursor-pointer');
+        btn.classList.remove('cursor-pointer');
         if (idx === q.ans) {
-          btn.classList.add('bg-emerald-50', 'dark:bg-emerald-950/40', 'border-emerald-500', 'text-emerald-800', 'dark:text-emerald-300');
-          btn.querySelector('span:first-child').classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
+          btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500 text-emerald-600 dark:text-emerald-400 transition flex items-start gap-3 text-xs sm:text-sm";
         } else if (idx === selectedIdx && !isCorrect) {
-          btn.classList.add('bg-rose-50', 'dark:bg-rose-950/40', 'border-rose-500', 'text-rose-800', 'dark:text-rose-300');
-          btn.querySelector('span:first-child').classList.add('bg-rose-500', 'text-white', 'border-rose-500');
+          btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl bg-rose-500/20 border border-rose-500 text-rose-600 dark:text-rose-400 transition flex items-start gap-3 text-xs sm:text-sm";
         }
       });
 
@@ -1379,20 +1352,18 @@
       const feedbackText = document.getElementById('quiz-feedback-text');
 
       feedbackStatus.innerHTML = isCorrect
-        ? `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i><span class="text-emerald-700 dark:text-emerald-400 font-semibold">ตอบถูกต้อง</span>`
-        : `<i data-lucide="x-circle" class="w-4 h-4 text-rose-600 dark:text-rose-400"></i><span class="text-rose-700 dark:text-rose-400 font-semibold">ยังไม่ถูกต้อง (ข้อที่ถูกคือ ${String.fromCharCode(65 + q.ans)})</span>`;
+        ? `<span class="text-emerald-500">✓ ตอบถูกต้อง</span>`
+        : `<span class="text-rose-500">✗ ยังไม่ถูกต้อง (ข้อที่ถูกคือ ${String.fromCharCode(65 + q.ans)})</span>`;
       
       feedbackText.innerText = q.exp;
       feedbackBox.classList.remove('hidden');
 
       if (currentQIndex < QUIZ_SIZE - 1) {
-        quizNextBtn.innerHTML = `<span>ข้อถัดไป</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        quizNextBtn.innerHTML = `<span>ข้อถัดไป</span><svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`;
       } else {
-        quizNextBtn.innerHTML = `<span>สรุปคะแนนสอบ</span><i data-lucide="award" class="w-4 h-4"></i>`;
+        quizNextBtn.innerHTML = `<span>สรุปคะแนนสอบ</span>`;
       }
       quizNextBtn.classList.remove('hidden');
-
-      if (window.lucide) lucide.createIcons();
     }
 
     quizNextBtn.onclick = () => {
@@ -1421,26 +1392,24 @@
         summaryEl.innerText = "ควรกลับไปทบทวนในแท็บ 'คลังเนื้อหา' โดยเฉพาะ Prospect Theory และ Time Preference";
       }
 
-      // Review List
+      // Populate Review List
       quizReviewContainer.innerHTML = '';
       quizHistory.forEach((item, i) => {
         const row = document.createElement('div');
-        row.className = `p-4 rounded-2xl border text-xs leading-relaxed ${item.isCorrect ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/40 text-slate-800 dark:text-slate-200' : 'bg-rose-50/50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800/40 text-slate-800 dark:text-slate-200'}`;
+        row.className = `p-4 rounded-2xl border text-xs leading-relaxed ${item.isCorrect ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-rose-500/10 border-rose-500/30'}`;
         row.innerHTML = `
           <div class="font-medium mb-1 flex items-start gap-2">
-            <span class="${item.isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'} font-bold font-mono">#${i+1}</span>
+            <span class="${item.isCorrect ? 'text-emerald-500' : 'text-rose-500'} font-bold font-mono">#${i+1}</span>
             <span>${item.question}</span>
           </div>
-          <div class="text-slate-500 dark:text-slate-400 text-xs mt-1">
-            คำตอบของคุณ: <span class="${item.isCorrect ? 'text-emerald-600 dark:text-emerald-400 font-semibold' : 'text-rose-600 dark:text-rose-400 font-semibold'}">${item.options[item.userAns]}</span>
+          <div class="opacity-70 text-xs mt-1">
+            คำตอบของคุณ: <span class="${item.isCorrect ? 'text-emerald-500' : 'text-rose-500'} font-semibold">${item.options[item.userAns]}</span>
           </div>
-          ${!item.isCorrect ? `<div class="text-slate-600 dark:text-slate-300 text-xs mt-0.5">เฉลยที่ถูกต้อง: <span class="text-emerald-600 dark:text-emerald-400 font-semibold">${item.options[item.correctAns]}</span></div>` : ''}
-          <div class="text-slate-500 dark:text-slate-400 text-[11px] mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 italic">คำอธิบาย: ${item.explanation}</div>
+          ${!item.isCorrect ? `<div class="opacity-90 text-xs mt-0.5">เฉลยที่ถูกต้อง: <span class="text-emerald-500 font-semibold">${item.options[item.correctAns]}</span></div>` : ''}
+          <div class="opacity-70 text-[11px] mt-2 pt-2 border-t border-slate-700/20 italic">คำอธิบาย: ${item.explanation}</div>
         `;
         quizReviewContainer.appendChild(row);
       });
-
-      if (window.lucide) lucide.createIcons();
     }
 
     quizToggleReviewBtn.onclick = () => {
@@ -1450,12 +1419,14 @@
     quizRunBtn.onclick = () => initQuizSession();
     quizRetryBtn.onclick = () => initQuizSession();
 
-    // DOM Ready: Init Charts and Icons
+    // DOM Ready: Init Native Canvas Engine
     window.addEventListener('DOMContentLoaded', () => {
-      if (window.lucide) lucide.createIcons();
-      setTimeout(() => {
-        createOrUpdateCharts();
-      }, 100);
+      drawNativeCharts();
+    });
+
+    // Window Resize: Redraw Native Canvas
+    window.addEventListener('resize', () => {
+      drawNativeCharts();
     });
   </script>
 </body>
